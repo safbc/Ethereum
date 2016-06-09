@@ -1,0 +1,1 @@
+geth --identity $1 --genesis Blockchain/genesisBlock.json --rpc --rpcport "20000" --rpccorsdomain "localhost" --rpcaddr "localhost" --datadir Blockchain/data --port 20010 --ipcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" --rpcapi "db,eth,net,web3,admin,personal" --autodag --networkid 44950 --nat "any" --nodiscover console
