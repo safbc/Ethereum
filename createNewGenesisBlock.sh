@@ -1,1 +1,1 @@
-geth --datadir EnigmaChain/data init EnigmaChain/genesisBlock.json 
+geth --datadir Blockchain/data init Blockchain/genesisBlock.json 
