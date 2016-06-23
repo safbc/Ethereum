@@ -30,7 +30,7 @@ sudo add-apt-repository -y ppa:ethereum/ethereum
 sudo add-apt-repository -y ppa:ethereum/ethereum-dev
 sudo apt-get -y update
 sudo apt-get -y upgrade # this will update cmake to version 3.x
-sudo apt-get -y install libcryptopp-dev libjson-rpc-cpp-dev # for ubuntu versions up to 15.9
+sudo apt-get -y install libcryptopp-dev libjson-rpc-cpp-dev # for ubuntu versions prior to 15.10
 sudo apt-get -y install libcryptopp-dev libjsonrpccpp-dev # for ubuntu versions 15.10+
 
 cd ~
@@ -99,17 +99,3 @@ Note: install cpulimit on linux to manage the cpu utilisation of this process.
 > eth.getBalance(eth.coinbase)
 1.53e+21
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
