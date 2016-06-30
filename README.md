@@ -40,7 +40,6 @@ cd webthree-umbrella
 ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
 
 sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
-```
 
 [Installing Solidity on Mac El Capitan](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
