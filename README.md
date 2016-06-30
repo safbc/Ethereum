@@ -17,9 +17,9 @@ sudo apt-get install -y ethereum
 
 ### Installing Solidity ###
 
+```
 [Installing Solidity on Ubuntu 14.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
-```
 #!bash
 
 sudo apt-get -y install build-essential git cmake libgmp-dev libboost-all-dev \
