@@ -42,6 +42,26 @@ cd webthree-umbrella
 sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
 ```
 
+[Installing Solidity on Mac El Capitan](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
+
+brew update
+brew upgrade
+
+brew install boost --c++11             # this takes a while
+brew install cmake cryptopp miniupnpc leveldb gmp libmicrohttpd libjson-rpc-cpp
+# For Mix IDE and Alethzero only
+brew install xz d-bus
+brew install homebrew/versions/v8-315
+brew install llvm --HEAD --with-clang
+brew install qt5 --with-d-bus          # add --verbose if long waits with a stale screen drive you crazy as well
+
+git clone --recursive https://github.com/ethereum/webthree-umbrella.git
+cd webthree-umbrella
+./webthree-helpers/scripts/ethupdate.sh --no-push --simple-pull --project solidity # update Solidity repo
+./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
+
+```
+
 To check that all is well with your ethereum + solidity installation, run
 
 
