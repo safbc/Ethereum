@@ -1,12 +1,12 @@
-contract MyToken {
+contract Token {
   string public name;
   mapping (address => uint256) public balanceOf;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
 
-  function MyToken(
+  function Token(
       uint256 initialSupply,
-      string tokenName,
+      string tokenName
       ) {
       balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
       name = tokenName;                                   // Set the name for display purposes
