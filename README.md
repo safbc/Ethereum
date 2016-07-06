@@ -15,11 +15,12 @@ sudo apt-get install -y ethereum
 ```
 
 
-### Installing Solidity ###
+### Installing Solidity on Ubuntu###
 
 [Installing Solidity on Ubuntu 14.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
 ```
+
 #!bash
 
 sudo apt-get -y install build-essential git cmake libgmp-dev libboost-all-dev \
@@ -30,7 +31,8 @@ sudo add-apt-repository -y ppa:ethereum/ethereum
 sudo add-apt-repository -y ppa:ethereum/ethereum-dev
 sudo apt-get -y update
 sudo apt-get -y upgrade # this will update cmake to version 3.x
-sudo apt-get -y install libcryptopp-dev libjson-rpc-cpp-dev
+sudo apt-get -y install libcryptopp-dev libjson-rpc-cpp-dev # for ubuntu versions prior to 15.10
+sudo apt-get -y install libcryptopp-dev libjsonrpccpp-dev # for ubuntu versions 15.10+
 
 cd ~
 git clone --recursive https://github.com/ethereum/webthree-umbrella.git
@@ -39,6 +41,28 @@ cd webthree-umbrella
 ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
 
 sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
+```
+### Installing Solidity on Mac El Capitan###
+[Installing Solidity on Mac El Capitan](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
+
+```
+#!bash
+brew update
+brew upgrade
+
+brew install boost --c++11             # this takes a while
+brew install cmake cryptopp miniupnpc leveldb gmp libmicrohttpd libjson-rpc-cpp
+# For Mix IDE and Alethzero only
+brew install xz d-bus
+brew install homebrew/versions/v8-315
+brew install llvm --HEAD --with-clang
+brew install qt5 --with-d-bus          # add --verbose if long waits with a stale screen drive you crazy as well
+
+git clone --recursive https://github.com/ethereum/webthree-umbrella.git
+cd webthree-umbrella
+./webthree-helpers/scripts/ethupdate.sh --no-push --simple-pull --project solidity # update Solidity repo
+./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
+
 ```
 
 To check that all is well with your ethereum + solidity installation, run
@@ -98,17 +122,3 @@ Note: install cpulimit on linux to manage the cpu utilisation of this process.
 > eth.getBalance(eth.coinbase)
 1.53e+21
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
