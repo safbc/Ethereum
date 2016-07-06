@@ -92,8 +92,6 @@ function run(){
           rl.question('Quantity: ', function(quantity){
             web3.eth.defaultAccount = web3.eth.coinbase;
             token.transfer(receiver, quantity, {gas: 100000, gasPrice: 1}, function(res){
-              var balance = token.balanceOf(receiver);
-              console.log('Receiver\'s new balance', Number(balance.c[0]));
               run();  
             });
           });
@@ -107,8 +105,9 @@ function run(){
         var token = getTokenInstance(contractSource, contractAddress);
         rl.question('Address: ', function(address){
           var balance = token.balanceOf(address);
-          console.log('Balance:', Number(balance.c[0]));
-          run();
+            console.log('Balance:', balance);
+//            console.log('Balance:', Number(balance.c[0]));
+            run();
         });
       }
     } else if (answer == 2){
