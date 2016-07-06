@@ -1,0 +1,19 @@
+{
+  "name": "blockchaininfrastructure",
+  "version": "1.0.0",
+  "description": "### Intalling Ethereum ###",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/springblock/blockchaininfrastructure.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/springblock/blockchaininfrastructure#readme",
+  "dependencies": {
+    "web3": "^0.17.0-alpha"
+  }
+}
