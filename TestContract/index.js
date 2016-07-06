@@ -67,12 +67,22 @@ function run(){
     '\n2) Deploy test contract:'+
     '\n3) Check balance:'+
     '\n4) Send token:'+
+    '\n5) Set token address:'+
     '\n0) Quit'+
     '\n> ', function(answer){
     if(answer == 0){
       console.log('Quiting');
       rl.close();
       return;
+    } else if (answer == 5){       
+      rl.question('Address of contract: ', function(newContractAddress){
+     	contractAddress = newContractAddress; 
+        var tokenContractFilePath = __dirname + '/testToken.sol';
+        fs.readFile(tokenContractFilePath, 'utf8', function(err, source){
+          contractSource = source;
+	  run();
+	});
+      });
     } else if (answer == 4){ 
       if(!contractAddress || !contractSource){
         console.log('First deploy a new contract!');
@@ -81,7 +91,7 @@ function run(){
         rl.question('Address of Receiver: ', function(receiver){
           rl.question('Quantity: ', function(quantity){
             web3.eth.defaultAccount = web3.eth.coinbase;
-            token.transfer(receiver, quantity, {gas: 100000, gasPrice}, function(res){
+            token.transfer(receiver, quantity, {gas: 100000, gasPrice: 1}, function(res){
               var balance = token.balanceOf(receiver);
               console.log('Receiver\'s new balance', Number(balance.c[0]));
               run();  
