@@ -66,12 +66,29 @@ function run(){
     '\n1) Get a block:'+
     '\n2) Deploy test contract:'+
     '\n3) Check balance:'+
+    '\n4) Send token:'+
     '\n0) Quit'+
     '\n> ', function(answer){
     if(answer == 0){
       console.log('Quiting');
       rl.close();
       return;
+    } else if (answer == 4){ 
+      if(!contractAddress || !contractSource){
+        console.log('First deploy a new contract!');
+      } else {
+        var token = getTokenInstance(contractSource, contractAddress);
+        rl.question('Address of Receiver: ', function(receiver){
+          rl.question('Quantity: ', function(quantity){
+            web3.eth.defaultAccount = web3.eth.coinbase;
+            token.transfer(receiver, quantity, {gas: 100000, gasPrice}, function(res){
+              var balance = token.balanceOf(receiver);
+              console.log('Receiver\'s new balance', Number(balance.c[0]));
+              run();  
+            });
+          });
+        });
+      }
     } else if (answer == 3){
       if(!contractAddress || !contractSource){
         console.log('First deploy a new contract!');
