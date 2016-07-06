@@ -15,10 +15,11 @@ sudo apt-get install -y ethereum
 ```
 
 
-### Installing Solidity ###
+### Installing Solidity on Ubuntu###
+
+[Installing Solidity on Ubuntu 14.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
 ```
-[Installing Solidity on Ubuntu 14.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
 #!bash
 
@@ -40,9 +41,12 @@ cd webthree-umbrella
 ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
 
 sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
-
+```
+### Installing Solidity on Mac El Capitan###
 [Installing Solidity on Mac El Capitan](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
 
+```
+#!bash
 brew update
 brew upgrade
 
