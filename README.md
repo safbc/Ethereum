@@ -63,6 +63,8 @@ cd webthree-umbrella
 ./webthree-helpers/scripts/ethupdate.sh --no-push --simple-pull --project solidity # update Solidity repo
 ./webthree-helpers/scripts/ethbuild.sh --no-git --project solidity --cores 4 -DEVMJIT=0 -DETHASHCL=0 # build Solidity only
 
+sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
+
 ```
 
 To check that all is well with your ethereum + solidity installation, run
