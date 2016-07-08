@@ -9,7 +9,6 @@
 
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:ethereum/ethereum
-sudo add-apt-repository -y ppa:ethereum/ethereum-dev
 sudo apt-get update
 sudo apt-get install -y ethereum
 ```
@@ -28,7 +27,6 @@ sudo apt-get -y install build-essential git cmake libgmp-dev libboost-all-dev \
     libmicrohttpd-dev
 
 sudo add-apt-repository -y ppa:ethereum/ethereum
-sudo add-apt-repository -y ppa:ethereum/ethereum-dev
 sudo apt-get -y update
 sudo apt-get -y upgrade # this will update cmake to version 3.x
 sudo apt-get -y install libcryptopp-dev libjson-rpc-cpp-dev # for ubuntu versions prior to 15.10
