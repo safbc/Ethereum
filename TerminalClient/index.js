@@ -23,15 +23,16 @@ function getBlockByBlockNumber(blockNumber, cb){
 }
 
 function submitTokenContract(tokenName, numberOfTokens, cb){
-  var tokenContractFilePath = __dirname + '/testToken.sol';
+  var rootDirectory = __dirname.replace("TerminalClient", "");
+  var tokenContractFilePath = rootDirectory + '/Contracts/testCoin.sol';
   fs.readFile(tokenContractFilePath, 'utf8', function(err, source){
     if(err){console.log("ERROR:", err);}
-    web3.personal.unlockAccount(web3.eth.coinbase, "1234", 3600, function(err, res){
+    web3.personal.unlockAccount(web3.eth.coinbase, "1234", 60*60, function(err, res){
       if(err){console.log("ERROR:", err);}
       web3.eth.defaultAccount = web3.eth.coinbase;
       var compiled = web3.eth.compile.solidity(source);
-      var code = compiled.Token.code;
-      var abi = compiled.Token.info.abiDefinition;
+      var code = compiled.TestCoin.code;
+      var abi = compiled.TestCoin.info.abiDefinition;
 
       web3.eth.contract(abi).new(numberOfTokens, tokenName, {data: code, gas: 1000000, gasPrice: 1}, function (err, contract) { // Note that this callback is called twice
         if(err) {
@@ -52,7 +53,7 @@ function submitTokenContract(tokenName, numberOfTokens, cb){
 
 function getTokenInstance(contractSource, contractAddress){
   var compiled = web3.eth.compile.solidity(contractSource);
-  var abi = compiled.Token.info.abiDefinition;
+  var abi = compiled.TestCoin.info.abiDefinition;
   var tokenContract_ = web3.eth.contract(abi);
   var token = tokenContract_.at(contractAddress);
   return token;
@@ -64,14 +65,34 @@ var contractSource = null;
 function run(){
   rl.question('What would you like to do: '+
     '\n1) Get a block:'+
-    '\n2) Deploy test contract:'+
+    '\n2) Deploy TestCoin contract:'+
     '\n3) Check balance:'+
+    '\n4) Send TestCoin:'+
     '\n0) Quit'+
     '\n> ', function(answer){
     if(answer == 0){
       console.log('Quiting');
       rl.close();
       return;
+    } else if (answer == 4){
+      if(!contractAddress || !contractSource){
+        console.log('First deploy a new contract!');
+        run();
+      } else {
+        rl.question('To Address: ', function(toAddress){
+          rl.question('From Address: ', function(fromAddress){
+            rl.question('Amount: ', function(amount){              
+              web3.eth.defaultAccount = fromAddress;
+              var token = getTokenInstance(contractSource, contractAddress);
+              token.transfer(toAddress, amount, function(err, res){
+                if(err) {console.log('ERROR:', err)}
+                console.log(res);
+                run();
+              });
+            });
+          });
+        });
+      }
     } else if (answer == 3){
       if(!contractAddress || !contractSource){
         console.log('First deploy a new contract!');
@@ -85,7 +106,7 @@ function run(){
         });
       }
     } else if (answer == 2){
-      submitTokenContract('testToken', 100, function(res){
+      submitTokenContract('TestCoin', 100, function(res){
         contractAddress = res.contractAddress;
         contractSource = res.contractSource;
         run();
