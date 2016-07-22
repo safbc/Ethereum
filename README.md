@@ -105,3 +105,11 @@ Note: install cpulimit on linux to manage the cpu utilisation of this process.
 > eth.getBalance(eth.coinbase)
 1.53e+21
 ```
+##Setting up the private network
+
+###Introduction
+The springblock network is a private ethereum network.  Please read this to get a background on ethereum networks and how the connectivity between the nodes works (https://github.com/ethereum/go-ethereum/wiki/Connecting-to-the-network)
+
+The springblock network is designed as a test network for South Africa.  The aim is to make it inclusive for any approved financial institution.  In order to keep the network connected we will be using static-nodes.json and trusted-nodes.json.
+
+This ensures that if ever a node disconnects for any reason, it will immediately attempt to reconnect to the trusted nodes.  This creates a level of robustness on the network.
