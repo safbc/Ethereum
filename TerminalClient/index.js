@@ -24,17 +24,17 @@ function getBlockByBlockNumber(blockNumber, cb){
 
 function submitTokenContract(tokenName, numberOfTokens, cb){
   var rootDirectory = __dirname.replace("TerminalClient", "");
-  var tokenContractFilePath = rootDirectory + '/Contracts/testCoin.sol';
+  var tokenContractFilePath = rootDirectory + '/Contracts/testToken.sol';
   fs.readFile(tokenContractFilePath, 'utf8', function(err, source){
     if(err){console.log("ERROR:", err);}
-    web3.personal.unlockAccount(web3.eth.coinbase, "1234", 60*60, function(err, res){
+    web3.personal.unlockAccount(web3.eth.coinbase, "1234", 60*60*24, function(err, res){
       if(err){console.log("ERROR:", err);}
       web3.eth.defaultAccount = web3.eth.coinbase;
       var compiled = web3.eth.compile.solidity(source);
-      var code = compiled.TestCoin.code;
-      var abi = compiled.TestCoin.info.abiDefinition;
+      var code = compiled.Token.code;
+      var abi = compiled.Token.info.abiDefinition;
 
-      web3.eth.contract(abi).new(numberOfTokens, tokenName, {data: code, gas: 1000000, gasPrice: 1}, function (err, contract) { // Note that this callback is called twice
+      web3.eth.contract(abi).new(numberOfTokens, tokenName, 'XZA', 2, {data: code, gas: 1000000, gasPrice: 1}, function (err, contract) { // Note that this callback is called twice
         if(err) {
           console.error("ERROR:", err); 	// Log any errors
           cb();
@@ -53,7 +53,7 @@ function submitTokenContract(tokenName, numberOfTokens, cb){
 
 function getTokenInstance(contractSource, contractAddress){
   var compiled = web3.eth.compile.solidity(contractSource);
-  var abi = compiled.TestCoin.info.abiDefinition;
+  var abi = compiled.Token.info.abiDefinition;
   var tokenContract_ = web3.eth.contract(abi);
   var token = tokenContract_.at(contractAddress);
   return token;
@@ -65,15 +65,26 @@ var contractSource = null;
 function run(){
   rl.question('What would you like to do: '+
     '\n1) Get a block:'+
-    '\n2) Deploy TestCoin contract:'+
+    '\n2) Deploy TestToken contract with 1000000 tokens:'+
     '\n3) Check balance:'+
-    '\n4) Send TestCoin:'+
+    '\n4) Send TestToken:'+
+    '\n5) Load TestToken contract:'+
     '\n0) Quit'+
     '\n> ', function(answer){
     if(answer == 0){
       console.log('Quiting');
       rl.close();
       return;
+    } else if (answer == 5){
+      rl.question('Test token address: ', function(address){
+        var rootDirectory = __dirname.replace("TerminalClient", "");
+        var tokenContractFilePath = rootDirectory + '/Contracts/testToken.sol';
+        fs.readFile(tokenContractFilePath, 'utf8', function(err, source){
+          contractAddress = address;
+          contractSource = source; 
+          run();
+        });
+      });
     } else if (answer == 4){
       if(!contractAddress || !contractSource){
         console.log('First deploy a new contract!');
@@ -106,7 +117,7 @@ function run(){
         });
       }
     } else if (answer == 2){
-      submitTokenContract('TestCoin', 100, function(res){
+      submitTokenContract('TestToken', 1000000, function(res){
         contractAddress = res.contractAddress;
         contractSource = res.contractSource;
         run();
