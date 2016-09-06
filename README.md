@@ -38,7 +38,6 @@ sudo ln -s ~/webthree-umbrella/solidity/build/solc/solc /usr/local/bin/
 
 [Installing solidity on Ubuntu 16.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html)  *This may also work on 14.04 - not tested*
 ```
-#!bash
 sudo add-apt-repository ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install solc
