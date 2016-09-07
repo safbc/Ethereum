@@ -1,5 +1,5 @@
 ## Getting started ##
-aa
+
 ### Intalling Ethereum ###
 
 [Installation Instructions for Ubuntu 14.04](https://github.com/ethereum/go-ethereum/wiki/Installation-Instructions-for-Ubuntu):
