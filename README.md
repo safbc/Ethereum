@@ -15,7 +15,7 @@ sudo apt-get install -y ethereum
 ### Installing Solidity on Ubuntu###
 
 [Installing Solidity on Ubuntu 14.04](http://solidity.readthedocs.io/en/latest/installing-solidity.html):
-
+* references to the webthree-umbrella are out of date. This repo has been deprecated *
 ```
 sudo apt-get -y install build-essential git cmake libgmp-dev libboost-all-dev \
     libjsoncpp-dev libleveldb-dev libcurl4-openssl-dev libminiupnpc-dev \
@@ -125,3 +125,9 @@ The springblock network is a private ethereum network.  Please read this to get 
 The springblock network is designed as a test network for South Africa.  The aim is to make it inclusive for any approved financial institution.  In order to keep the network connected we will be using static-nodes.json and trusted-nodes.json.
 
 This ensures that if ever a node disconnects for any reason, it will immediately attempt to reconnect to the trusted nodes.  This creates a level of robustness on the network.
+
+##Monitoring the network
+
+The /monitoring folder contains a Dockerfile and nodejs app.json for building a custom Docker container with a version of the [https://github.com/cubedro/eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api) RPC monitoring agent.
+This agent will publish the collected data to the private eth-stats based website at (http://41.76.226.170:3000).
+Read the comments in the Dockerfile for building and run instructions.
