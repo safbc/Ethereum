@@ -1,0 +1,22 @@
+FROM ubuntu:trusty
+# xenial -> 16.04 LTS
+# Based on https://hub.docker.com/r/ethereum/client-go/~/dockerfile/
+MAINTAINER Gary de Beer
+
+RUN apt-get update && apt-get upgrade -q -y
+RUN apt-get install -q -y git curl software-properties-common vim
+# Got a proxy? 
+#ENV HTTPS_PROXY=http://proxy.esl.cisco.com:80
+#ENV HTTP_PROXY=http://proxy.esl.cisco.com:80
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN apt-get update
+RUN apt-get install -q -y geth
+
+#ADD ethereum /home/ubuntu/ethereum
+VOLUME ["/BlockchainInfrastucture"]
+WORKDIR /BlockchainInfrastucture
+
+EXPOSE 20000
+EXPOSE 20010
+
+CMD ["./dockerStart.sh"]
