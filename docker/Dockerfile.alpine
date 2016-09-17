@@ -1,3 +1,4 @@
+#NOTE: Not yet functional or complete: Work in progress
 FROM ethereum/client-go:alpine
 # Apline Linux
 # Based on https://hub.docker.com/r/ethereum/client-go/~/dockerfile/
