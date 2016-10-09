@@ -1,3 +1,5 @@
+//pragma solidity ^0.4.2;
+
 contract owned {
   address public owner;
 
@@ -7,7 +9,7 @@ contract owned {
 
   modifier onlyOwner{
     if(msg.sender != owner) throw;
-    _
+    _;
   }
 
   function transferOwnership(address newOwner) onlyOwner {
@@ -25,6 +27,11 @@ contract Token is owned {
   bool public allowOperation = true;
   mapping (address => uint256) public balanceOf;
 
+  /*
+    Keep track of addresses that have been authorised to debit a TestToken account
+  */
+  mapping (address => mapping (address => bool)) authorisedDelegates;
+
   event Transfer(address indexed from, address indexed to, uint256 value);
 
   function Token(
@@ -33,8 +40,8 @@ contract Token is owned {
     string symbol_,
     uint8 decimalUnits) {
       owner = msg.sender;
-      balanceOf[owner] = initialSupply;                   
-      totalSupply = initialSupply;        
+      balanceOf[owner] = initialSupply;
+      totalSupply = initialSupply;
       name = tokenName;
       symbol = symbol_;
       decimals = decimalUnits;
@@ -42,19 +49,46 @@ contract Token is owned {
 
   modifier onlyWhenOperationIsAllowed{
     if(allowOperation == false) throw;
-    _
+    _;
   }
 
   function setAllowOperation(bool _allowOperation) onlyOwner{
     allowOperation = _allowOperation;
   }
 
+  /*
+    This function enables the sender to authorise a contract to debit their
+    tokenBalance.  This is to enable the DvP contract
+  */
+  function authorise(address _delegate) onlyWhenOperationIsAllowed {
+    authorisedDelegates[msg.sender][_delegate] = true;
+  }
+
+  function removeAuthorisation(address _delegate) onlyWhenOperationIsAllowed {
+    delete authorisedDelegates[msg.sender][_delegate];
+  }
+
+  function canTransferEx(address _from, address _to, uint256 _value) onlyWhenOperationIsAllowed returns (bool) {
+    if (!authorisedDelegates[msg.sender][msg.sender] == true) throw;
+    if (balanceOf[_from] < _value) throw;
+    return true;
+  }
+
+  function transferEx(address _from, address _to, uint256 _value) onlyWhenOperationIsAllowed {
+    if (!authorisedDelegates[msg.sender][msg.sender] == true) throw;
+    if (balanceOf[_from] < _value) throw;
+    if (balanceOf[_to] + _value < balanceOf[_to]) throw;
+    balanceOf[msg.sender] -= _value;
+    balanceOf[_to] += _value;
+    Transfer(msg.sender, _to, _value);
+  }
+
   function transfer(address _to, uint256 _value) onlyWhenOperationIsAllowed {
     if (balanceOf[msg.sender] < _value) throw;
     if (balanceOf[_to] + _value < balanceOf[_to]) throw;
     balanceOf[msg.sender] -= _value;
-    balanceOf[_to] += _value;                            
-    Transfer(msg.sender, _to, _value); 
+    balanceOf[_to] += _value;
+    Transfer(msg.sender, _to, _value);
   }
 
   function adjustOwnerBalance(int _value) onlyOwner onlyWhenOperationIsAllowed{
