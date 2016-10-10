@@ -1,6 +1,27 @@
 //pragma solidity ^0.4.2;
 
-import "testToken.sol";
+
+contract owned {
+  address public owner;
+
+  function owned(){
+    owner = msg.sender;
+  }
+
+  modifier onlyOwner{
+    if(msg.sender != owner) throw;
+    _;
+  }
+
+  function transferOwnership(address newOwner) onlyOwner {
+    owner = newOwner;
+  }
+}
+
+contract Token {
+  function canTransferEx(address _from, address _to, uint256 _value) returns (bool);
+  function transferEx(address _from, address _to, uint256 _value);
+}
 
 contract DvP is owned {
   address public owner;
@@ -26,6 +47,7 @@ contract DvP is owned {
 
   event Settled(address indexed from, address indexed to, uint256 value);
   event Committed(address indexed from, address indexed to, string tradeId);
+  event Error(string erro);
 
 
 
@@ -45,10 +67,11 @@ contract DvP is owned {
     Commitment commitment = settlementCommitments[msg.sender][_counterparty][_tradeId];
 
     if (commitment.commitingParty == 0) {
-      settlementCommitments[_counterparty][msg.sender][_tradeId] = Commitment(msg.sender,
+      Commitment memory memoryCommitment = Commitment(msg.sender,
                                                               _tradeId, _acceptToken,
                                                               _deliverToken, _acceptAmount,
                                                               _deliverAmount);
+      settlementCommitments[_counterparty][msg.sender][_tradeId] = memoryCommitment;
       Committed(msg.sender, _counterparty, _tradeId);
     }
     else if ( commitment.commitingParty == _counterparty &&
@@ -57,10 +80,12 @@ contract DvP is owned {
               commitment.deliverToken == _acceptToken &&
               commitment.acceptAmount == _deliverAmount &&
               commitment.deliverAmount == _acceptAmount) {
-      if (Token(_acceptToken).canTransferEx(_counterparty, msg.sender, _acceptAmount) &&
-          Token(_deliverToken).canTransferEx(msg.sender, _counterparty, _deliverAmount)) {
-        Token(_acceptToken).transferEx(_counterparty, msg.sender, _acceptAmount);
-        Token(_deliverToken).transferEx(msg.sender, _counterparty, _deliverAmount);
+      var acceptTok = Token(_acceptToken);
+      var deliverTok = Token(_deliverToken);
+      if (acceptTok.canTransferEx(_counterparty, msg.sender, _acceptAmount) &&
+          deliverTok.canTransferEx(msg.sender, _counterparty, _deliverAmount)) {
+        acceptTok.transferEx(_counterparty, msg.sender, _acceptAmount);
+        deliverTok.transferEx(msg.sender, _counterparty, _deliverAmount);
         delete settlementCommitments[msg.sender][_counterparty][_tradeId];
       }
       else {
@@ -68,7 +93,8 @@ contract DvP is owned {
           TODO Handle the situation in which settlement fails as a result of
                one of the parties having insufficient balance
         */
-        throw;
+        Error("Settlement failed as result of insufficient balance");
+        /*throw;*/
       }
     }
     else {
@@ -76,7 +102,8 @@ contract DvP is owned {
         TODO Handle the situation in which settlement instructions don't agree
              on assets or amounts
       */
-      throw;    /* Commitment found, but the details don't match*/
+      /*throw; */
+      Error("Settlement failed as result of insufficient balance");
     }
   }
 
