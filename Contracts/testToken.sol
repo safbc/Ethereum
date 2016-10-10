@@ -68,19 +68,29 @@ contract Token is owned {
     delete authorisedDelegates[msg.sender][_delegate];
   }
 
+  function hasAuth(address _from) onlyWhenOperationIsAllowed returns (bool){
+    if (!authorisedDelegates[_from][msg.sender] == true) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   function canTransferEx(address _from, address _to, uint256 _value) onlyWhenOperationIsAllowed returns (bool) {
-    if (!authorisedDelegates[msg.sender][msg.sender] == true) throw;
-    if (balanceOf[_from] < _value) throw;
-    return true;
+    if (balanceOf[_from] < _value){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   function transferEx(address _from, address _to, uint256 _value) onlyWhenOperationIsAllowed {
-    if (!authorisedDelegates[msg.sender][msg.sender] == true) throw;
+    if (!authorisedDelegates[_from][msg.sender] == true) throw;
     if (balanceOf[_from] < _value) throw;
     if (balanceOf[_to] + _value < balanceOf[_to]) throw;
-    balanceOf[msg.sender] -= _value;
+    balanceOf[_from] -= _value;
     balanceOf[_to] += _value;
-    Transfer(msg.sender, _to, _value);
+    Transfer(_from, _to, _value);
   }
 
   function transfer(address _to, uint256 _value) onlyWhenOperationIsAllowed {

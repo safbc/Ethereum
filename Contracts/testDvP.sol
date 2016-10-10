@@ -19,6 +19,7 @@ contract owned {
 }
 
 contract Token {
+  function hasAuth(address from) returns (bool);
   function canTransferEx(address _from, address _to, uint256 _value) returns (bool);
   function transferEx(address _from, address _to, uint256 _value);
 }
@@ -45,11 +46,10 @@ contract DvP is owned {
   mapping (address => mapping ( address => mapping (string => Commitment))) settlementCommitments;
 
 
-  event Settled(address indexed from, address indexed to, uint256 value);
+  event Settled(address indexed from, address indexed to, string tradeId);
   event Committed(address indexed from, address indexed to, string tradeId);
-  event Error(string erro);
-
-
+  event Error(string error);
+  event Debug(string debug);
 
   modifier onlyWhenOperationIsAllowed{
     if(allowOperation == false) throw;
@@ -80,21 +80,35 @@ contract DvP is owned {
               commitment.deliverToken == _acceptToken &&
               commitment.acceptAmount == _deliverAmount &&
               commitment.deliverAmount == _acceptAmount) {
+
       var acceptTok = Token(_acceptToken);
       var deliverTok = Token(_deliverToken);
-      if (acceptTok.canTransferEx(_counterparty, msg.sender, _acceptAmount) &&
-          deliverTok.canTransferEx(msg.sender, _counterparty, _deliverAmount)) {
-        acceptTok.transferEx(_counterparty, msg.sender, _acceptAmount);
-        deliverTok.transferEx(msg.sender, _counterparty, _deliverAmount);
-        delete settlementCommitments[msg.sender][_counterparty][_tradeId];
-      }
-      else {
-        /*
-          TODO Handle the situation in which settlement fails as a result of
-               one of the parties having insufficient balance
-        */
-        Error("Settlement failed as result of insufficient balance");
-        /*throw;*/
+   
+      Debug('Going to test so that execution can happen'); 
+     if(acceptTok.hasAuth(_counterparty) != true){
+        Error('Counterparty does not have auth'); 
+      } else {
+        
+        if(deliverTok.hasAuth(msg.sender) != true){
+          Debug('msg.sender does not have auth'); 
+        } else {
+          if (acceptTok.canTransferEx(_counterparty, msg.sender, _acceptAmount) &&
+              deliverTok.canTransferEx(msg.sender, _counterparty, _deliverAmount)) {
+            
+            acceptTok.transferEx(_counterparty, msg.sender, _acceptAmount);
+            deliverTok.transferEx(msg.sender, _counterparty, _deliverAmount);
+            Settled(_counterparty, msg.sender, _tradeId);
+            delete settlementCommitments[msg.sender][_counterparty][_tradeId];
+          }
+          else {
+            /*
+              TODO Handle the situation in which settlement fails as a result of
+                   one of the parties having insufficient balance
+            */
+            Error("Settlement failed as result of insufficient balance");
+            /*throw;*/
+          }
+        }
       }
     }
     else {
