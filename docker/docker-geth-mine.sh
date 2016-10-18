@@ -46,7 +46,7 @@ BCDATA=/BlockchainInfrastructure/Blockchain/data
 WORKDIR=/BlockchainInfrastructure
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
-MINEPARAMS=" --mine --etherbase $COINBASE --preload Blockchain/pauseMining.js"
+MINEPARAMS=" --mine --etherbase $COINBASE --preload $WORKDIR/Blockchain/pauseMining.js"
 OTHERPARAMS=" --autodag --fast --cache=512 --nat any --metrics --nodiscover --maxpeers 0 --verbosity 3"
 
 # Display the settings being used on startup
