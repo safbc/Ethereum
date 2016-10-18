@@ -1,5 +1,7 @@
 ## Getting started ##
 
+For a really quick start see the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for scripts that will get Docker based containers on your server. 
+
 ### Intalling Ethereum ###
 
 [Installation Instructions for Ubuntu 14.04](https://github.com/ethereum/go-ethereum/wiki/Installation-Instructions-for-Ubuntu):
@@ -128,6 +130,6 @@ This ensures that if ever a node disconnects for any reason, it will immediately
 
 ##Monitoring the network
 
-The /monitoring folder contains a Dockerfile and nodejs app.json for building a custom Docker container with a version of the [https://github.com/cubedro/eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api) RPC monitoring agent.
-This agent will publish the collected data to the private eth-stats based website at (http://41.76.226.170:3000).
-Read the comments in the Dockerfile for building and run instructions.
+See the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for the ``docker-agent.sh`` script that will start a Docker container with a version of the [https://github.com/cubedro/eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api) RPC monitoring agent.
+
+This agent will publish the collected data to the private eth-stats website dashboard at (http://41.76.226.170:3000).
