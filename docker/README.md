@@ -1,29 +1,67 @@
-``` work in progress
-
 #Running in Docker
 
-The geth client can be run as a clean Docker image (latest build). Choose one of the distros below.
-One could also fork your own Docker off of these and customise it further as required.
+The Ethereum Go client (geth) can be run as a preconfigured Docker image (latest build) on Linux and Mac OS X using these bash scripts below. Windows shell scripts comming soon.
 
-###Ubuntu 14.04 (158 MB):
-```docker pull ethereum/client-go:trusty```
+There is no need to install a local Ethereum instance. Just edit and run these scripts to pull and start the client (geth) with all our current startup parameters defined.
 
-###Ubuntu 16.04 (180MB)
-```docker pull ethereum/client-go:xenial```
+###The appropriate Docker Engine for your OS needs to be installed.
+See the Docker documentation at https://docs.docker.com/
 
-###Alpine Linux (35 MB):
-```docker pull ethereum/client-go:alpine```
+####Admin privileges may be required (sudo)
+
 
 ##New scripts
-For our purposes we can then use these alternate scripts to initialise and then start it in mining or non-mining mode. Apart from the ```genisis``` and ```attach``` scripts, the containers will be run in the background.
 
-The scripts will launch the container and:
-  * bind it to the host IP address (--network host)
-  * open the various network ports (-p ...)
-  * mount a local folder for storing the blockchain data (-v ...)
+``./docker-geth-genesis.sh`` 
+
+Use this the first time to generate your new genesis block.
+
+``./docker-geth-console.sh``
+
+Use this for an interactive instance of the client (without mining) that can be used to set up accounts etc.
+One can also ``attach`` to a running node using the attach script.
+
+``./docker-geth-mine.sh``
+
+This script will launch a background instance of the geth node with JIT mining enabled.
+####You need to edit the script before use to configure the appropriate parameters for your specific environment.
+
+##Behind the scenes
+
+These scripts will download (only the first time) and launch the docker latest container and:
+  * bind it to the host OS IP address
+  * open the required network ports (20000, 20010)
+  * mount a local folder for persisting this node's blockchain data (/BlockchainInfrastructure/Blockchain/data)
   
 Please add the current static-nodes.json and trusted-nodes.json files to this local folder.
 
+##Network monitoring
 
+``./docker-agent.sh``
+
+This script will can be used to run a docker image of the Ethereum Network Intelligence API (https://github.com/cubedro/eth-net-intelligence-api) agent that is configured to upload your node stats to the Springblock network monitoring dashboard. 
+
+Please edit the sample ``/BlockchainInfrastructure/ethnetintel/app.json`` file as per your own requirements before using this script.
+
+You can access the dashboard at http://41.76.226.170:3000/
+
+
+##Helpfull Docker commands
+
+``docker ps -a``
+
+Display all containers on your system.
+
+``docker logs -f springblocknode``
+
+This will display the output (non interactive) of the background container.
+
+``docker inspect springblocknode``
+
+Generate a detailed report (json formatted) of the current configuration of the docker container. 
+
+``docker stop springblocknode``
+
+This will stop the background springblock node
 
 
