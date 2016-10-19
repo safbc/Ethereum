@@ -4,7 +4,7 @@
 # Author        : Gary de Beer (BankservAfrica)
 # Last modified : 19/10/2016
 
-# This script is installed as part of springblock/BlockchainInfrastructure Git repo and requires all 
+# This script is installed as part of springblock/BlockchainInfrastructure Git repo and requires all
 # files from that repo to be present in the path as configured in the $WORKDIR variable below.
 
 # Quick start
@@ -15,7 +15,7 @@
 # (Note: This will print the standard usage instructions)
 
 # To compile a contract you will run this script along with the name (no path) of the soldity contract file you want to compile.
-# This script assumes all contract files will be placed in the BlockchainInfrastructure/Contracts folder.  
+# This script assumes all contract files will be placed in the BlockchainInfrastructure/Contracts folder.
 
 # ./docker-eth-solc.sh <yoursoliditycontract>.sol
 
@@ -32,19 +32,18 @@ echo "Public IP: $IP"
 
 #DO NOT CHANGE THESE VALUES
 WORKDIR=/BlockchainInfrastructure
-CONTRACTS=$WORKDIR/Contracts
 OUTPUT=$WORKDIR/Contracts/Output
 
 # Display the settings being used on startup
 echo "Startup parameters: (edit script to alter)"
-echo "WORKDIR    = $WORKDIR"
-echo "CONTRACTS  = $CONTRACTS"
+echo "CONTRACT   = $1"
 echo "OUTPUT     = $OUTPUT"
 
+if [ ! -d "$OUTPUT" ]; then
 mkdir $OUTPUT
+fi
 
 docker run --name springblocksolc -v $WORKDIR:$WORKDIR \
-   -w="$WORKDIR" \
-   mrhornsby/solc:latest -o $OUTPUT --abi --bin $CONTRACTS/$1
+   mrhornsby/solc:latest -o $OUTPUT --abi --bin $1
 
 ls -l $OUTPUT
