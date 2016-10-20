@@ -1,25 +1,43 @@
-#This is an Ethereum Solidity compiler image, allowing you to compile contracts on any platform that supports Docker.
+echo "
+Welcome to
+
+  _____ ____  ____   ____  ____    ____  ____   _       ___     __  __  _ 
+ / ___/|    \|    \ |    ||    \  /    ||    \ | |     /   \   /  ]|  |/ ]
+(   \_ |  o  )  D  ) |  | |  _  ||   __||  o  )| |    |     | /  / |  ' / 
+ \__  ||   _/|    /  |  | |  |  ||  |  ||     || |___ |  O  |/  /  |    \ 
+ /  \ ||  |  |    \  |  | |  |  ||  |_ ||  O  ||     ||     /   \_ |     
+ \    ||  |  |  .  \ |  | |  |  ||     ||     ||     ||     \     ||  .  |
+  \___||__|  |__|\_||____||__|__||___,_||_____||_____| \___/ \____||__|\_|
+
+
+The South African Private Blockchain Network
+
+
+
+This is an Ethereum Solidity compiler image, allowing you to compile contracts on any platform that supports Docker.
 
 # Script name   : docker-eth-solc.sh
 # Author        : Gary de Beer (BankservAfrica)
-# Last modified : 19/10/2016
+# Last modified : 20/10/2016
 
-# This script is installed as part of springblock/BlockchainInfrastructure Git repo and requires all
-# files from that repo to be present in the path as configured in the $WORKDIR variable below.
+This script is installed as part of springblock/BlockchainInfrastructure Git repo and requires all
+files from that repo to be present in the path as configured in the $WORKDIR variable below.
 
-# Quick start
-# ===========
-# To invoke the solidity compiler, solc, you can simply run the container:
+Quick start
+===========
+To invoke the solidity compiler, solc, you can simply run the container:
 
-# docker run mrhornsby/solc:latest
-# (Note: This will print the standard usage instructions)
+docker run mrhornsby/solc:latest
+(Note: This will print the standard usage instructions)
 
-# To compile a contract you will run this script along with the name (no path) of the soldity contract file you want to compile.
-# This script assumes all contract files will be placed in the BlockchainInfrastructure/Contracts folder.
+To compile a contract you will run this script along with the full path name of the soldity contract 
+file you want to compile.
 
-# ./docker-eth-solc.sh <yoursoliditycontract>.sol
+ ./docker-eth-solc.sh <yoursoliditycontract>.sol
 
-# (Note: This will output both the ABI and the contract binary in hex, feel free to select other options as required)
+(Note: This will output both the ABI and the contract binary in hex, feel free to select other options as required)
+
+"
 
 # get IPs from ifconfig and dig and display for information
 LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)

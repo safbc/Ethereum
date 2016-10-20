@@ -1,27 +1,43 @@
-# This script starts an instance of the latest Ethereum Go client in a Docker vm
-# The instance is preconfigured for the South African Blockchain network and will
-# perform just-in-time mining of eth to the specified coinbase account.
+echo "
+Welcome to
+
+  _____ ____  ____   ____  ____    ____  ____   _       ___     __  __  _ 
+ / ___/|    \|    \ |    ||    \  /    ||    \ | |     /   \   /  ]|  |/ ]
+(   \_ |  o  )  D  ) |  | |  _  ||   __||  o  )| |    |     | /  / |  ' / 
+ \__  ||   _/|    /  |  | |  |  ||  |  ||     || |___ |  O  |/  /  |    \ 
+ /  \ ||  |  |    \  |  | |  |  ||  |_ ||  O  ||     ||     /   \_ |     
+ \    ||  |  |  .  \ |  | |  |  ||     ||     ||     ||     \     ||  .  |
+  \___||__|  |__|\_||____||__|__||___,_||_____||_____| \___/ \____||__|\_|
+
+
+The South African Private Blockchain Network
+
+
+This script starts an instance of the latest Ethereum Go client in a Docker vm
+The instance is preconfigured for the South African Blockchain network and will
+perform just-in-time mining of eth to the specified coinbase account.
 
 # Script name       : docker-geth-mine.sh
 # Author            : Gary De Beer (BankservAfrica)
-# Last Modifiy Date : 18/10/2016 
+# Last Modifiy Date : 20/10/2016 
 
-# USAGE NOTES:
-# ===========
+USAGE NOTES:
+===========
 
-# This script is installed as part of the springblock/BlockchainInfrastructure Git repo and requires all 
-# files from that repo to be present in the path as configured in the $WORKDIR variable below.
+This script is installed as part of the springblock/BlockchainInfrastructure Git repo and requires all 
+files from that repo to be present in the path as configured in the $WORKDIR variable below.
 
-# Please make sure a Genesis block and Personal Account have been set up before you run this script for the first time.
-# See these scripts:
-# docker-geth-genesis.sh
-# docker-geth-console.sh 
+Please make sure a Genesis block and Personal Account have been set up before you run this script for the first time.
+See these scripts:
+docker-geth-genesis.sh
+docker-geth-console.sh 
 
-# Please make appropriate changes to the $NODEID, $NETID, $COINBASE values below for your node.
+Please make appropriate changes to the $NODEID, $NETID, $COINBASE values below for your node.
 
 # It is still required to configure both static-nodes.json and trusted-nodes.json before any network
 # connections can be etablished. These must be placed in the $CHAINDATA path specified below 
 
+"
 
 # remove any previous version of the docker image
 docker rm springblocknode
@@ -41,8 +57,8 @@ COINBASE="0x714abced09269d76896caf0555fdff644fbfae20"
 #DO NOT CHANGE THESE VALUES
 RPCPORT=20000
 PORT=20010
-AGENTORIGIN="http://127.0.0.1:3000"
-BCDATA=/BlockchainInfrastructure/Blockchain/data
+AGENTORIGIN="http://41.76.226.170:3000"
+CHAINDATA=/BlockchainInfrastructure/Blockchain/data
 WORKDIR=/BlockchainInfrastructure
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
