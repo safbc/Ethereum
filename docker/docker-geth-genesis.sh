@@ -19,15 +19,8 @@
 # remove any previous version of the docker image
 docker rm springblocknode
 
-# get IPs from ifconfig and dig and display for information
-LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
-IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
-
-echo "Local IP: $LOCALIP"
-echo "Public IP: $IP"
-
 #DO NOT CHANGE THESE VALUES
-BCDATA=/BlockchainInfrastructure/Blockchain/data
+CHAINDATA=/BlockchainInfrastructure/Blockchain/data
 WORKDIR=/BlockchainInfrastructure
 GENISISPARAMS=" --datadir $CHAINDATA init $WORKDIR/Blockchain/genesisBlock.json"
 
@@ -40,6 +33,6 @@ echo " "
 echo "GETH  CMD  = $GENESISPARAMS"
 
 docker run -t -i --name springblocknode -v $WORKDIR:$WORKDIR \
-    --network="host" -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
+    --network="host" \
     -w="$WORKDIR" \
     ethereum/client-go $GENESISPARAMS
