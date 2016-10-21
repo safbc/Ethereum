@@ -1,2 +1,3 @@
 Blockchain/data/*
 *.swp
+**/ipfs/**
