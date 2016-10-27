@@ -1,7 +1,7 @@
 var mining_threads = 1;
 
 function checkWork() {
-  if (eth.pendingTransactions.length > 0) {
+  if (eth.pendingTransactions.length > 0 || txpool.status.pending > 0) {
     if (eth.mining) return;
     console.log("== Pending transactions! Mining...");
     miner.start(mining_threads);
