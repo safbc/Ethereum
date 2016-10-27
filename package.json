@@ -14,8 +14,9 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/springblock/blockchaininfrastructure#readme",
   "dependencies": {
+    "async": "^2.1.2",
     "ethereum-transaction-creator": "0.0.3",
-    "ethereumjs-testrpc": "^3.0.0",
+    "ethereumjs-tx": "^1.1.2",
     "expect": "^1.20.2",
     "expect.js": "^0.3.1",
     "grunt": "^1.0.1",
