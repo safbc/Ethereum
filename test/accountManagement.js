@@ -1,35 +1,21 @@
 var expect = require('expect.js');
 var async = require('async');
 
-var TestRPC = require("ethereumjs-testrpc");
 var keythereum = require("keythereum");
 var Tx = require('ethereumjs-tx');
 var Web3 = require('web3');
 var web3 = new Web3();
-//web3.setProvider(new web3.providers.HttpProvider('http://localhost:20000'));
-web3.setProvider(TestRPC.provider());
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:20000'));
+//web3.setProvider(TestRPC.provider());
+
+var newBlockEvents = require('../Events/newBlockEvents.js');
+var events = require('../Events/eventEmitter.js');
 
 var accounts = [];
-var generatedAccounts = [];
 
 describe('Account Management:', function() {
-  it('The TestRPC should generate some accounts with balances', function(done){
-    web3.eth.getAccounts(function(err, accountList){
-      if(err) {console.log('ERROR:', err);}
-      expect(accountList.length).to.be.greaterThan(1);
-      generatedAccounts = accountList;
-      async.each(generatedAccounts, function(account, cb){
-        web3.eth.getBalance(account, function(err, balance){
-          if(err) {cb(err);}
-          expect(balance.c[0]).to.be.greaterThan(0);
-          cb();
-        });
-      }, function(err){
-        if(err) {console.log('ERROR:', err);}
-        done();
-      });
-    });
-  });
+  this.timeout(60 * 1000);
+  newBlockEvents.Start();
   it('should be able to create a public/private key pair', function(done) {
     var account = {};
     account.privateKey = keythereum.create().privateKey.toString('hex');
@@ -42,18 +28,21 @@ describe('Account Management:', function() {
     done();
   });
   it('the new account should be able to receive some funds', function(done){
-    var tx = {
-      from: generatedAccounts[0], 
-      to: accounts[0].address, 
-      value: 10000
-    };
-    web3.eth.sendTransaction(tx, function(err, res){
-      if(err){console.log('ERROR:', err);}
-      web3.eth.getBalance(accounts[0].address, function(err, balance){
-        if(err) {console.log('ERROR:', err);}
-        // It seems like sendTransaction converts tx.value to hex, hence the parseInt
-        expect(balance.c[0]).to.be(parseInt(tx.value, 16)); 
-        done();
+    web3.personal.unlockAccount(web3.eth.coinbase, '1234', function(err, res){  
+      var tx = {
+        from: web3.eth.coinbase, 
+        to: accounts[0].address, 
+        value: 2000000
+      };
+      web3.eth.sendTransaction(tx, function(err, res){
+        if(err){console.log('ERROR:', err);}
+        events.once('newBlock', function(block, intent){
+          web3.eth.getBalance(accounts[0].address, function(err, balance){
+            if(err) {console.log('ERROR:', err);}
+            expect(balance.c[0]).to.be(parseInt(tx.value, 16)); 
+            done();
+          });
+        });
       });
     });
   });
@@ -67,7 +56,7 @@ describe('Account Management:', function() {
       from: accounts[0].address, 
       to: accounts[1].address, 
       gasPrice: '0x'+padToEven(Number(1).toString(16)),
-      gasLimit: '0x'+padToEven(Number(1).toString(16)),
+      gasLimit: '0x'+padToEven(Number(100000).toString(16)),
       value: 1000
     };
 
@@ -79,11 +68,12 @@ describe('Account Management:', function() {
       var serializedTx = tx.serialize();
       web3.eth.sendRawTransaction(serializedTx.toString('hex'), function(err, hash) {
         if (err) {console.log('ERROR:', err);}
-        web3.eth.getBalance(accounts[1].address, function(err, balance){
-          if(err) {console.log('ERROR:', err);}
-          // It seems like sendTransaction converts tx.value to hex, hence the parseInt
-          expect(balance.c[0]).to.be(rawTx.value); 
-          done();
+        events.once('newBlock', function(block, intent){
+          web3.eth.getBalance(accounts[1].address, function(err, balance){
+            if(err) {console.log('ERROR:', err);}
+            expect(balance.c[0]).to.be(rawTx.value); 
+            done();
+          });
         });
       });
     });
