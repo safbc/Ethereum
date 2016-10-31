@@ -1,0 +1,14 @@
+<h2>Recent Transactions</h2>
+<ul class="transactions">
+  <li *ngFor="let transaction of transactions"
+    [class.selected]="transaction === selectedTransaction"
+    (click)="onSelect(transaction)">
+    <span class="badge">{{transaction.id}}</span> {{transaction.name}}
+  </li>
+</ul>
+<div *ngIf="selectedTransaction">
+  <h2>
+    {{selectedTransaction.name | uppercase}} is my selected Transaction
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>
