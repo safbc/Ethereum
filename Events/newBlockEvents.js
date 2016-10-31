@@ -12,4 +12,12 @@ function start(){
   });
 }
 
+eventEmitter.on('newBlock', function(block, intent){
+  if(intent == 'latest'){
+    setTimeout(function(){
+      eventEmitter.emit('100msDelayedNewBlock', block, '100msDelayed');
+    }, 1000);
+  }
+});
+
 exports.Start = start;

@@ -32,7 +32,7 @@ describe('Account Management:', function() {
       };
       web3.eth.sendTransaction(tx, function(err, res){
         if(err){console.log('ERROR:', err);}
-        events.once('newBlock', function(block, intent){
+        events.once('100msDelayedNewBlock', function(block, intent){
           web3.eth.getBalance(accounts[0], function(err, balance){
             if(err) {console.log('ERROR:', err);}
             expect(balance.c[0]).to.be(parseInt(tx.value, 16)); 
@@ -54,14 +54,10 @@ describe('Account Management:', function() {
       value: 1000
     };
     accountManagement.SignRawTransaction(rawTx, accounts[0], function(tx){
-      console.log('1');
       web3.eth.sendRawTransaction(tx, function(err, hash) {
-        console.log('2');
         if (err) {console.log('ERROR:', err);}
-        events.once('newBlock', function(block, intent){
-          console.log('3');
+        events.once('100msDelayedNewBlock', function(block, intent){
           web3.eth.getBalance(accounts[1], function(err, balance){
-            console.log('4');
             if(err) {console.log('ERROR:', err);}
             expect(balance.c[0]).to.be(rawTx.value); 
             done();
