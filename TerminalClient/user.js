@@ -26,60 +26,74 @@ function getNameAndPassword(cb){
 
 var loggedInUser = null;
 
+function handleNotLoggedInUser(cb){
+  rl.question('What would you like to do: '+
+    '\n1) Register new user'+
+    '\n2) Login'+
+    '\n0) Quit'+
+    '\n> ', function(answer){
+    if(answer == 0){
+      console.log('Quiting');
+      rl.close();
+      userRegistry.CloseDB();
+      return;
+    } else if (answer == 1){ // Register new user
+      getNameAndPassword(function(nameAndPassword){
+        accountManagement.HandleUserRegistration(nameAndPassword, function(newUser){
+          if(newUser){
+            loggedInUser = nameAndPassword;
+            loggedInUser.address = newUser.address;
+            cb();
+          } else {
+            console.log('\nUsername already taken. Please try again.\n');
+            cb();
+          }
+        });      
+      });
+    } else if (answer == 2){ // Login         
+      getNameAndPassword(function(nameAndPassword){
+        accountManagement.Login(nameAndPassword.name, nameAndPassword.password, function(user){
+          loggedInUser = user; 
+          cb();
+        }); 
+      });        
+    } else {
+      cb();
+    }
+  });
+}
+
+function handleLoggedInUser(cb){
+  var displayUser = {
+    name: loggedInUser.name,
+    address: loggedInUser.address
+  };
+  console.log('\nUser:', displayUser.name);
+  console.log('Address:', displayUser.address);
+  rl.question('What would you like to do: '+
+    '\n1) Send funds'+
+    '\n0) Log out'+
+    '\n> ', function(answer){
+    if(answer == 0){
+      loggedInUser = null;
+      run();
+    } else if (answer == 1){ // Send funds
+    } else {
+      cb();
+    }
+  });
+}
+
 function run(){
   etherDistribution.StartEtherDistribution();
   if(loggedInUser == null){
-    rl.question('What would you like to do: '+
-      '\n1) Register new user'+
-      '\n2) Login'+
-      '\n0) Quit'+
-      '\n> ', function(answer){
-      if(answer == 0){
-        console.log('Quiting');
-        rl.close();
-        userRegistry.CloseDB();
-        return;
-      } else if (answer == 1){ // Register new user
-        getNameAndPassword(function(nameAndPassword){
-          accountManagement.HandleUserRegistration(nameAndPassword, function(newUser){
-            loggedInUser = nameAndPassword;
-            loggedInUser.address = newUser.address;
-            run();
-          });      
-        });
-      } else if (answer == 2){ // Login         
-        getNameAndPassword(function(nameAndPassword){
-          accountManagement.Login(nameAndPassword.name, nameAndPassword.password, function(user){
-            loggedInUser = user; 
-            run();
-          }); 
-        });        
-      } else {
-        run();
-      }
+    handleNotLoggedInUser(function(res){
+      run();
     });
   } else {
-    var displayUser = {
-      name: loggedInUser.name,
-      address: loggedInUser.address
-    };
-    console.log('User:', displayUser.name);
-    console.log('Address:', displayUser.address);
-    rl.question('What would you like to do: '+
-      '\n1) Send funds'+
-      '\n0) Quit'+
-      '\n> ', function(answer){
-      if(answer == 0){
-        console.log('Quiting');
-        rl.close();
-        userRegistry.CloseDB();
-        return;
-      } else if (answer == 1){ // Register new user
-      } else if (answer == 2){ // Login         
-      } else {
-        run();
-      }
-    });
+    handleLoggedInUser(function(res){
+      run();
+    }); 
   }
 }
 
