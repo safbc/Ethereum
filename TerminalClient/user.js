@@ -1,5 +1,6 @@
 var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
+var userRegistry = require('../DataAccess/userRegistry.js');
 
 var Web3 = require('web3');
 var fs = require('fs');
@@ -36,22 +37,49 @@ function run(){
       if(answer == 0){
         console.log('Quiting');
         rl.close();
+        userRegistry.CloseDB();
         return;
       } else if (answer == 1){ // Register new user
         getNameAndPassword(function(nameAndPassword){
-          handleUserRegistration(nameAndPassword, function(newUser){
-            loggedInUser = newUser;
+          accountManagement.HandleUserRegistration(nameAndPassword, function(newUser){
+            loggedInUser = nameAndPassword;
+            loggedInUser.address = newUser.address;
             run();
           });      
         });
       } else if (answer == 2){ // Login         
-        
+        getNameAndPassword(function(nameAndPassword){
+          accountManagement.Login(nameAndPassword.name, nameAndPassword.password, function(user){
+            loggedInUser = user; 
+            run();
+          }); 
+        });        
       } else {
         run();
       }
     });
   } else {
-
+    var displayUser = {
+      name: loggedInUser.name,
+      address: loggedInUser.address
+    };
+    console.log('User:', displayUser.name);
+    console.log('Address:', displayUser.address);
+    rl.question('What would you like to do: '+
+      '\n1) Send funds'+
+      '\n0) Quit'+
+      '\n> ', function(answer){
+      if(answer == 0){
+        console.log('Quiting');
+        rl.close();
+        userRegistry.CloseDB();
+        return;
+      } else if (answer == 1){ // Register new user
+      } else if (answer == 2){ // Login         
+      } else {
+        run();
+      }
+    });
   }
 }
 

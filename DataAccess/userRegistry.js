@@ -34,30 +34,45 @@ function getListOfUsers(cb){
   }
 }
 
-function getUser(username, cb){
+function getUser(name, cb){
   if(!db){
     connectToDB(function(){
-      getUser(username, function(res){
+      getUser(name, function(res){
         cb(res);
       });
     });
   } else {
-    db.userRegistry.findOne({username: {$regex: new RegExp('^'+username+'$', 'i')}}, function(err, docs){
+    db.userRegistry.findOne({name: {$regex: new RegExp('^'+name+'$', 'i')}}, function(err, docs){
       logError(err);
       cb(docs);
     });
   }
 }
 
-function getUserAndPassword(username, password, cb){
+function getUserAndPassword(name, password, cb){
   if(!db){
     connectToDB(function(){
-      getUserAndPassword(username, password, function(res){
+      getUserAndPassword(name, password, function(res){
         cb(res);
       });
     });
   } else {
-    db.userRegistry.findOne({username: {$regex: new RegExp('^'+username+'$', 'i')}, password: password}, function(err, docs){
+    db.userRegistry.findOne({name: {$regex: new RegExp('^'+name+'$', 'i')}, password: password}, function(err, docs){
+      logError(err);
+      cb(docs);
+    });
+  }
+}
+
+function getAddressAndPassword(address, password, cb){
+  if(!db){
+    connectToDB(function(){
+      getAddressAndPassword(address, password, function(res){
+        cb(res);
+      });
+    });
+  } else {
+    db.userRegistry.findOne({address: address, password: password}, function(err, docs){
       logError(err);
       cb(docs);
     });
@@ -136,5 +151,6 @@ exports.GetUserRegistry = getUserRegistry;
 exports.AddUserToRegistry = addUserToRegistry;
 exports.CloseDB = closeDB;
 exports.GetUserAndPassword = getUserAndPassword;
+exports.GetAddressAndPassword = getAddressAndPassword;
 exports.UpdateUser = updateUser;
 exports.FindUserFromAddress = findUserFromAddress;
