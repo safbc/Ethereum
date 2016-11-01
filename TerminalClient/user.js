@@ -12,24 +12,47 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+function getNameAndPassword(cb){
+  rl.question('Please enter a name: ', function(name){
+    rl.question('Please enter a password: ', function(password){
+      cb({
+        name: name, 
+        password: password
+      });
+    });
+  });
+}
+
+var loggedInUser = null;
 
 function run(){
   etherDistribution.StartEtherDistribution();
-  rl.question('What would you like to do: '+
-    '\n1) Register new user'+
-    '\n0) Quit'+
-    '\n> ', function(answer){
-    if(answer == 0){
-      console.log('Quiting');
-      rl.close();
-      return;
-    } else if (answer == 1){ // Register new user
-       
-      
-    } else {
-      run();
-    }
-  });
+  if(loggedInUser == null){
+    rl.question('What would you like to do: '+
+      '\n1) Register new user'+
+      '\n2) Login'+
+      '\n0) Quit'+
+      '\n> ', function(answer){
+      if(answer == 0){
+        console.log('Quiting');
+        rl.close();
+        return;
+      } else if (answer == 1){ // Register new user
+        getNameAndPassword(function(nameAndPassword){
+          handleUserRegistration(nameAndPassword, function(newUser){
+            loggedInUser = newUser;
+            run();
+          });      
+        });
+      } else if (answer == 2){ // Login         
+        
+      } else {
+        run();
+      }
+    });
+  } else {
+
+  }
 }
 
 run();
