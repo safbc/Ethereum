@@ -1,7 +1,7 @@
 {
-  "name": "angular-quickstart",
+  "name": "SpringBlockWebclient",
   "version": "1.0.0",
-  "description": "QuickStart package.json from the documentation, supplemented with testing support",
+  "description": "SpringBlock web client - provides visibility to the transactions happening on the SpringBlock blockchain.",
   "scripts": {
     "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
     "docker-build": "docker build -t ng2-quickstart .",
