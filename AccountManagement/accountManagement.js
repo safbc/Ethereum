@@ -1,3 +1,5 @@
+var userRegistry = require('../DataAccess/userRegistry.js');
+
 var keythereum = require("keythereum");
 var Tx = require('ethereumjs-tx');
 var Web3 = require('web3');

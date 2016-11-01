@@ -26,6 +26,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-mocha-cli": "^2.1.0",
     "keythereum": "^0.2.6",
+    "mongojs": "^2.4.0",
     "web3": "^0.17.0-alpha"
   }
 }

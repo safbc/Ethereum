@@ -14,6 +14,4 @@ function checkWork() {
 eth.filter("latest", function(err, block) { checkWork(); });
 eth.filter("pending", function(err, block) { checkWork(); });
 
-setTimeout(function(){
-    checkWork();
-    }, 1000);
+checkWork();

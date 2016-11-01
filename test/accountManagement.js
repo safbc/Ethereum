@@ -4,7 +4,6 @@ var async = require('async');
 var Web3 = require('web3');
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:20000'));
-//web3.setProvider(TestRPC.provider());
 
 var accountManagement = require('../AccountManagement/accountManagement.js');
 
