@@ -104,8 +104,9 @@ function handleLoggedInUser(cb){
               , nameAndValue.value);
             accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
               , function(signedTx){
-              web3.eth.sendRawTransaction(rawTx, function(err, hash) {
-              if (err) {console.log('ERROR:', err);}
+              console.log('signedTx:', signedTx);
+              web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+              if (err) {console.log('ERROR|SendRawTransaction:', err);}
                 console.log('Funds sent, tx hash:', hash);
                 cb();
               });
