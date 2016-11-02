@@ -26,6 +26,7 @@ function removeAccountFromWatchList(account){
 function checkAndFundAccount(address, cb){
   web3.eth.getBalance(address, function(err, balance){
     if(err){console.log('ERROR:', err)}
+    console.log('checkAndFundAccount:', address, '| balance:', balance.c[0]);
     if(balance.c[0] < minimumBalance){
       var value = accounts[address] - balance.c[0];
       var tx = {
@@ -44,6 +45,8 @@ function checkAndFundAccount(address, cb){
 
 function startEtherDistribution(){
   newBlockEvents.Start();
+  web3.personal.unlockAccount(web3.eth.coinbase, '1234', 9999999, function(err, res){
+  });
   events.on('newBlock', function(blockHash, intent){
     web3.eth.getBlock(blockHash, function(err, block){
       if(intent == 'latest' && block.transactions && block.transactions.length > 0){
