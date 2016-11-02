@@ -1,6 +1,6 @@
 ## Getting started ##
 
-For a really quick start see the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for scripts that will get Docker based containers on your server. 
+For a really quick start see the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for scripts that will get Docker based containers on your server.
 
 ### Intalling Ethereum ###
 
@@ -73,7 +73,7 @@ To check that all is well with your ethereum + solidity installation, run
 
 
 ```
-$ geth console 
+$ geth console
 > eth.getCompilers()
 I0606 14:59:20.468976 common/compiler/solidity.go:114] solc, the solidity compiler commandline interface
 Version: 0.3.4-0a0fc046/RelWithDebInfo-Linux/g++/Interpreter
@@ -133,3 +133,6 @@ This ensures that if ever a node disconnects for any reason, it will immediately
 See the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for the ``docker-agent.sh`` script that will start a Docker container with a version of the [https://github.com/cubedro/eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api) RPC monitoring agent.
 
 This agent will publish the collected data to the private eth-stats website dashboard at (http://41.76.226.170:3000).
+
+## Running the web client ##
+In order to make the blockchain transactions a little more visible and easier to interact with, we are building a web ui that can run on top of the ethereum node.  You will require node.js and npm in order to run the client.  Simple go to the WebClient folder and type npm start
