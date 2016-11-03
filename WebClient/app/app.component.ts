@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   template: `
     <h1>{{title}}</h1>
     <nav>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
       <a routerLink="/transfer" routerLinkActive="active">Transfer</a>
       <a routerLink="/transactions" routerLinkActive="active">Transactions</a>
     </nav>
