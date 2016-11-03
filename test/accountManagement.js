@@ -12,14 +12,16 @@ var events = require('../Events/eventEmitter.js');
 
 var accounts = [];
 
+var password = '1234';
+
 describe('Account Management:', function() {
   this.timeout(60 * 1000);
   newBlockEvents.Start();
   it('should be able to create a public/private key pair', function(done) {
-    var account = accountManagement.NewAccount();
+    var account = accountManagement.NewAccount(password);
     accounts.push(account);
     expect(account).to.not.be(null);
-    expect(accountManagement.ListAccounts.length).to.be.greaterThan(0);
+    expect(accountManagement.IsAddressInCache(account)).to.be(true);
     done();
   });
   it('the new account should be able to receive some funds', function(done){
@@ -44,7 +46,7 @@ describe('Account Management:', function() {
   it('the new account should be able to send some funds', function(done){
     var account = accountManagement.NewAccount();
     accounts.push(account);
-
+    // TODO: this needs to change to using the ethereum transaction creator
     var rawTx = {
       from: accounts[0], 
       to: accounts[1], 
@@ -52,7 +54,7 @@ describe('Account Management:', function() {
       gasLimit: '0x'+padToEven(Number(25000).toString(16)),
       value: 1000
     };
-    accountManagement.SignRawTransaction(rawTx, accounts[0], function(tx){
+    accountManagement.SignRawTransaction(rawTx, accounts[0], password, function(tx){
       web3.eth.sendRawTransaction(tx, function(err, hash) {
         if (err) {console.log('ERROR:', err);}
         events.once('100msDelayedNewBlock', function(block, intent){
@@ -67,6 +69,7 @@ describe('Account Management:', function() {
   });
 });
 
+// TODO: this need to move to the Util module
 function padToEven(n, z){
   return pad(n, n.length + n.length % 2, z);
 }
