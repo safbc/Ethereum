@@ -7,6 +7,7 @@ var newBlockEvents = require('../Events/newBlockEvents.js');
 var events = require('../Events/eventEmitter.js');
 
 var accounts = [];
+var password = '1234';
 
 var Web3 = require('web3');
 var web3 = new Web3();
@@ -16,7 +17,7 @@ describe('Ether distribution:', function() {
   this.timeout(60 * 1000);
   etherDistribution.StartEtherDistribution();
   it('Should allow adding another account and that account should then be funded', function(done){
-    var account = accountManagement.NewAccount();
+    var account = accountManagement.NewAccount(password);
     accounts.push(account);
     etherDistribution.AddAccountToWatch(account, function(res){
       events.once('100msDelayedNewBlock', function(block, intent){
@@ -38,7 +39,7 @@ describe('Ether distribution:', function() {
     var gasCost = web3.eth.estimateGas(rawTx);
     rawTx.gasPrice = '0x'+padToEven(Number(1).toString(16));
     rawTx.gasLimit = '0x'+padToEven(Number(gasCost).toString(16));
-    accountManagement.SignRawTransaction(rawTx, accounts[0], function(tx){
+    accountManagement.SignRawTransaction(rawTx, accounts[0], password, function(tx){
       web3.eth.sendRawTransaction(tx, function(err, hash) {
         if (err) {console.log('ERROR:', err);}
         events.once('100msDelayedNewBlock', function(block, intent){
