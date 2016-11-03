@@ -19,7 +19,7 @@ function newAccount(password, cb){
   var privateKey = keythereum.create().privateKey.toString('hex');
   var address = keythereum.privateKeyToAddress(privateKey);
   accounts[address] = {
-    privateKey: new Buffer(privateKey, 'hex'), 
+    privateKey: privateKey, 
     password: password
   };
   if(cb){
@@ -74,7 +74,7 @@ function userLogin(name, password, cb){
 // Can't get the private key without the password, this function is to remain private!
 function getPrivateKey(address, password, cb){
   if(accounts[address] != null && accounts[address].password == password){
-    var privateKey = accounts[senderAddress].privateKey;
+    var privateKey = accounts[address].privateKey;
     cb(privateKey);
   } else { // Load into cache
     userRegistry.GetAddressAndPassword(senderAddress, password, function(user){
@@ -94,7 +94,7 @@ function signRawTransaction(rawTx, senderAddress, password, cb){
     web3.eth.getTransactionCount(senderAddress, function(err, nonce){
       rawTx.nonce = '0x'+nonce.toString(16);
       var tx = new Tx(rawTx);
-      tx.sign(privateKey);
+      tx.sign(new Buffer(privateKey, 'hex'));
       var serializedTx = tx.serialize();
       cb(serializedTx.toString('hex'));
     });

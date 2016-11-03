@@ -1,5 +1,6 @@
 var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
+var txCreator = require('../TransactionCreator/transactionCreator.js');
 var userRegistry = require('../DataAccess/userRegistry.js');
 
 var Web3 = require('web3');
@@ -24,6 +25,17 @@ function getNameAndPassword(cb){
   });
 }
 
+function getNameAndvalue(cb){
+  rl.question('Please enter a name: ', function(name){
+    rl.question('Please enter a value: ', function(value){
+      cb({
+        name: name, 
+        value: value
+      });
+    });
+  });
+}
+
 var loggedInUser = null;
 
 function handleNotLoggedInUser(cb){
@@ -43,7 +55,9 @@ function handleNotLoggedInUser(cb){
           if(newUser){
             loggedInUser = nameAndPassword;
             loggedInUser.address = newUser.address;
-            cb();
+            etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
+              cb();
+            });
           } else {
             console.log('\nUsername already taken. Please try again.\n');
             cb();
@@ -54,7 +68,9 @@ function handleNotLoggedInUser(cb){
       getNameAndPassword(function(nameAndPassword){
         accountManagement.Login(nameAndPassword.name, nameAndPassword.password, function(user){
           loggedInUser = user; 
-          cb();
+            etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
+              cb();
+            });
         }); 
       });        
     } else {
@@ -78,6 +94,26 @@ function handleLoggedInUser(cb){
       loggedInUser = null;
       run();
     } else if (answer == 1){ // Send funds
+      getNameAndvalue(function(nameAndValue){
+        userRegistry.GetUser(nameAndValue.name, function(toUser){
+          if(toUser == null){
+            console.log('ERROR: user not found:', nameAndValue.name);
+            cb();
+          } else {
+            var rawTx = txCreator.GetRawSendEther(loggedInUser.address, toUser.address
+              , nameAndValue.value);
+            accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+              , function(signedTx){
+              console.log('signedTx:', signedTx);
+              web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+              if (err) {console.log('ERROR|SendRawTransaction:', err);}
+                console.log('Funds sent, tx hash:', hash);
+                cb();
+              });
+            });
+          }
+        });
+      });
     } else {
       cb();
     }
