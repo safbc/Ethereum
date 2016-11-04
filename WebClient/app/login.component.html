@@ -1,20 +1,25 @@
 
 <div class="row">
   <div class="col-md-3 col-xs-8">
+    <div *ngIf="user && user.isLoggedIn">
+      <h2>
+        User is logged in
+      </h2>
+    </div>
     <h2>Login</h2>
     <table class="table table-striped">
       <tbody>
         <tr>
           <td>Username</td>
-          <td><input type="text" class="form-control text-right" /></td>
+          <td><input type="text" class="form-control" /></td>
         </tr>
         <tr>
           <td>Password</td>
-          <td><input type="password" class="form-control text-right" /></td>
+          <td><input type="password" class="form-control" /></td>
         </tr>
         <tr>
           <td></td>
-          <td><button type="button" class="btn btn-primary text-right">Login</button></td>
+          <td><button type="button" class="btn btn-primary">Login</button></td>
         </tr>
       </tbody>
     </table>
