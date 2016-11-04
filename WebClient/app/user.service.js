@@ -8,12 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var user_1 = require('./user');
 var core_1 = require('@angular/core');
 var UserService = (function () {
     function UserService() {
     }
     UserService.prototype.getUser = function () {
-        return Promise.resolve({ id: 11, name: 'Foundery', isLoggedIn: false });
+        if (!this.user) {
+            this.user = new user_1.User();
+            this.user.name = '';
+            this.user.isLoggedIn = false;
+        }
+        return Promise.resolve(this.user);
+    };
+    UserService.prototype.login = function (username, password) {
+        this.user.name = username;
+        this.user.isLoggedIn = true;
+        return Promise.resolve(this.user);
     };
     UserService = __decorate([
         core_1.Injectable(), 

@@ -15,7 +15,7 @@ var transfer_component_1 = require('./transfer.component');
 var transactions_component_1 = require('./transactions.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var routes = [
-    { path: '', redirectTo: '/transfer', pathMatch: 'full' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: 'transfer', component: transfer_component_1.TransferComponent },
     { path: 'detail/:id', component: transaction_detail_component_1.TransactionDetailComponent },

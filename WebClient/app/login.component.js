@@ -17,10 +17,18 @@ var LoginComponent = (function () {
         this.userService = userService;
     }
     LoginComponent.prototype.ngOnInit = function () {
-        /** Check to see if the user is logged in **/
         var _this = this;
         this.userService.getUser()
             .then(function (user) { return _this.user = user; });
+    };
+    LoginComponent.prototype.login = function () {
+        var _this = this;
+        console.log('userName: ', this.userName);
+        this.userService.login(this.userName, this.password)
+            .then(function (user) {
+            _this.user = user;
+            console.log('user: ', _this.user);
+        });
     };
     LoginComponent = __decorate([
         core_1.Component({

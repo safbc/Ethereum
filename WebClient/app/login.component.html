@@ -3,25 +3,27 @@
   <div class="col-md-3 col-xs-8">
     <div *ngIf="user && user.isLoggedIn">
       <h2>
-        User is logged in
+        User is logged in as <span>{{user.name}}</span>
       </h2>
     </div>
+    <div *ngIf="!user || user.isLoggedIn==false">
     <h2>Login</h2>
-    <table class="table table-striped">
-      <tbody>
-        <tr>
-          <td>Username</td>
-          <td><input type="text" class="form-control" /></td>
-        </tr>
-        <tr>
-          <td>Password</td>
-          <td><input type="password" class="form-control" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><button type="button" class="btn btn-primary">Login</button></td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <td>Username</td>
+            <td><input type="text" class="form-control" [(ngModel)]="userName" /></td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td><input type="password" class="form-control" /></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><button (click)="login() "type="button" class="btn btn-primary">Login</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
