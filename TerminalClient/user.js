@@ -9,7 +9,7 @@ var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
 var Web3 = require('web3');
 var fs = require('fs');
 var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:20000'));
+web3.setProvider(new web3.providers.HttpProvider(config.rpcaddress));
 
 const readline = require('readline');
 const rl = readline.createInterface({
