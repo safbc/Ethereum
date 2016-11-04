@@ -9,20 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Springblock Transaction Viewer';
+var UserService = (function () {
+    function UserService() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a routerLink=\"/login\" routerLinkActive=\"active\">Login</a>\n      <a routerLink=\"/transfer\" routerLinkActive=\"active\">Transfer</a>\n      <a routerLink=\"/transactions\" routerLinkActive=\"active\">Transactions</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
-            styleUrls: ['app.component.css'],
-        }), 
+    UserService.prototype.getUser = function () {
+        return Promise.resolve({ id: 11, name: 'Foundery', isLoggedIn: false });
+    };
+    UserService = __decorate([
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], UserService);
+    return UserService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.UserService = UserService;
+//# sourceMappingURL=user.service.js.map

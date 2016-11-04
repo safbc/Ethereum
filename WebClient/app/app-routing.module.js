@@ -10,11 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var login_component_1 = require('./login.component');
 var transfer_component_1 = require('./transfer.component');
 var transactions_component_1 = require('./transactions.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var routes = [
     { path: '', redirectTo: '/transfer', pathMatch: 'full' },
+    { path: 'login', component: login_component_1.LoginComponent },
     { path: 'transfer', component: transfer_component_1.TransferComponent },
     { path: 'detail/:id', component: transaction_detail_component_1.TransactionDetailComponent },
     { path: 'transactions', component: transactions_component_1.TransactionsComponent }

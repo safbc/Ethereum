@@ -9,20 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Springblock Transaction Viewer';
+var router_1 = require('@angular/router');
+var user_service_1 = require('./user.service');
+var LoginComponent = (function () {
+    function LoginComponent(router, userService) {
+        this.router = router;
+        this.userService = userService;
     }
-    AppComponent = __decorate([
+    LoginComponent.prototype.ngOnInit = function () {
+        /** Check to see if the user is logged in **/
+        var _this = this;
+        this.userService.getUser()
+            .then(function (user) { return _this.user = user; });
+    };
+    LoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a routerLink=\"/login\" routerLinkActive=\"active\">Login</a>\n      <a routerLink=\"/transfer\" routerLinkActive=\"active\">Transfer</a>\n      <a routerLink=\"/transactions\" routerLinkActive=\"active\">Transactions</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
-            styleUrls: ['app.component.css'],
+            selector: 'loginPage',
+            templateUrl: 'login.component.html',
+            styleUrls: ['login.component.css']
         }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
+    ], LoginComponent);
+    return LoginComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.LoginComponent = LoginComponent;
+//# sourceMappingURL=login.component.js.map

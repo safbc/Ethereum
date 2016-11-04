@@ -12,9 +12,11 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
+var login_component_1 = require('./login.component');
 var transfer_component_1 = require('./transfer.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var transactions_component_1 = require('./transactions.component');
+var user_service_1 = require('./user.service');
 var transaction_service_1 = require('./transaction.service');
 var app_routing_module_1 = require('./app-routing.module');
 var AppModule = (function () {
@@ -29,11 +31,15 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
+                login_component_1.LoginComponent,
                 transfer_component_1.TransferComponent,
                 transaction_detail_component_1.TransactionDetailComponent,
                 transactions_component_1.TransactionsComponent
             ],
-            providers: [transaction_service_1.TransactionService],
+            providers: [
+                transaction_service_1.TransactionService,
+                user_service_1.UserService
+            ],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])
