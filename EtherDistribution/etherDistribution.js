@@ -26,7 +26,6 @@ function removeAccountFromWatchList(account){
 function checkAndFundAccount(address, cb){
   web3.eth.getBalance(address, function(err, balance){
     if(err){console.log('ERROR:', err)}
-    console.log('checkAndFundAccount:', address, '| balance:', balance.c[0]);
     if(balance.c[0] < minimumBalance){
       var value = accounts[address] - balance.c[0];
       var tx = {

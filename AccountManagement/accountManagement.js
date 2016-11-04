@@ -56,6 +56,14 @@ function handleUserRegistration(nameAndPassword, cb){
   });   
 }
 
+function isAddressInCache(address){
+ if(accounts[address] != null){
+    return true;
+  } else {
+    return false;  
+  }
+}
+
 function userLogin(name, password, cb){
   userRegistry.GetUserAndPassword(name, password, function(user){
     accounts[user.address] = {
@@ -91,6 +99,7 @@ function getPrivateKey(address, password, cb){
 
 function signRawTransaction(rawTx, senderAddress, password, cb){
   getPrivateKey(senderAddress, password, function(privateKey){
+    // TODO: this needs to move to the transactoin creator module
     web3.eth.getTransactionCount(senderAddress, function(err, nonce){
       rawTx.nonce = '0x'+nonce.toString(16);
       var tx = new Tx(rawTx);
@@ -105,3 +114,4 @@ exports.NewAccount = newAccount;
 exports.SignRawTransaction = signRawTransaction;
 exports.HandleUserRegistration = handleUserRegistration;
 exports.Login = userLogin;
+exports.IsAddressInCache = isAddressInCache;
