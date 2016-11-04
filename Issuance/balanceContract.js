@@ -24,9 +24,8 @@ function submitContract(ownerAddress, initialSupply, cb){
       } else if(contract.address){  
         console.log('Contract mined, address: ' + contract.address);
         cb({
-          contractAddress: contract.address,
-          contractSource: source,
-          contractABI: abi
+          address: contract.address,
+          abi: abi
         });
       }
     });

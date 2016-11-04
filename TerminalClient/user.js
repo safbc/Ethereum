@@ -2,6 +2,9 @@ var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
 var txCreator = require('../TransactionCreator/transactionCreator.js');
 var userRegistry = require('../DataAccess/userRegistry.js');
+var contractRegistry = require('../DataAccess/contractRegistry.js');
+var balanceIssuance = require('../Issuance/balanceContract.js');
+var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
 
 var Web3 = require('web3');
 var fs = require('fs');
@@ -32,6 +35,27 @@ function getNameAndvalue(cb){
         name: name, 
         value: value
       });
+    });
+  });
+}
+
+function issueCryptoZAR(ownerAddress, cb){
+  balanceIssuance.SubmitContract(ownerAddress, 0, function(balanceContract){
+    web3.eth.defaultAccount = ownerAddress;
+    cryptoZARIssuance.SubmitCryptoZARContract(balanceContract.address, function(xzaContract){
+      balanceContract.name = config.assets.cryptoZARBalance;
+      contractRegistry.AddContractToRegistry(balanceContract, function(res){
+        xzaContract.name = config.assets.cryptoZAR;
+        contractRegistry.AddContractToRegistry(xzaContract, function(res){
+          cb();
+        });
+      }); 
+      //var xza = util.GetInstanceFromABI(xzaContract.abi, xzaContract.address);
+      // Change the owner of tha balance contract to the xzaContract.address
+      //var balanceContractInstance = util.GetInstanceFromABI(balanceContract.abi
+      //  , balanceContract.address);
+      
+      //balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1});
     });
   });
 }
@@ -88,11 +112,16 @@ function handleLoggedInUser(cb){
   console.log('Address:', displayUser.address);
   rl.question('What would you like to do: '+
     '\n1) Send funds'+
+    '\n2) Issue Crypto ZAR'+
     '\n0) Log out'+
     '\n> ', function(answer){
     if(answer == 0){
       loggedInUser = null;
       run();
+    } else if (answer == 2){
+      issueCryptoZAR(loggedInUser.address, function(res){
+        cb(res);
+      });
     } else if (answer == 1){ // Send funds
       getNameAndvalue(function(nameAndValue){
         userRegistry.GetUser(nameAndValue.name, function(toUser){
