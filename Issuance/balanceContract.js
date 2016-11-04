@@ -9,6 +9,7 @@ function submitContract(ownerAddress, initialSupply, cb){
   fs.readFile(filePath, 'utf8', function(err, source){
     if(err){console.log("ERROR:", err);}
     web3.eth.defaultAccount = ownerAddress;
+
     var compiled = web3.eth.compile.solidity(source);
     var code = compiled.Balance.code;
     var abi = compiled.Balance.info.abiDefinition;

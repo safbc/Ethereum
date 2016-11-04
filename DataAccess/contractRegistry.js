@@ -19,10 +19,10 @@ function connectToDB(cb){
   cb();
 }
 
-/*function getCryptoZARIssuance(cb){
+function getContract(contractName, contractVersion, cb){
   if(!db){
     connectToDB(function(){
-      getCryptoZARIssuance(function(res){
+      getContract(function(res){
         cb(res);
       });
     });
@@ -34,7 +34,7 @@ function connectToDB(cb){
   }
 }*/
 
-function addContractToRegistry(entry, cb){
+function addContract(entry, cb){
   if(!db){
     connectToDB(function(){
       addContractToRegistry(entry, function(res){
@@ -70,7 +70,7 @@ function closeDB(){
   }
 }
 
-//exports.GetCryptoZARIssuance = getCryptoZARIssuance;
-exports.AddContractToRegistry =  addContractToRegistry;
+exports.GetContract = getContract;
+exports.AddContract =  addContract;
 //exports.UpdateCryptoZAR =  updateCryptoZAR;
 exports.CloseDB = closeDB;

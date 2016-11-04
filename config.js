@@ -4,8 +4,14 @@ config.dbConnectionString = 'springblock';
 config.dbCollections = ['userRegistry', 'contractRegistry'];
 
 config.contractNames = {
-  cryptoZARBalance: 'cryptoZARBalance',
-  cryptoZAR: 'cryptoZAR'
+  cryptoZAR: {
+    version: 1,
+    name: 'cryptoZAR',
+    balance: {
+      version: 1,
+      name: 'cryptoZARBalance'
+    }
+  }
 };
 
 config.rpcaddress = 'http://localhost:20000';

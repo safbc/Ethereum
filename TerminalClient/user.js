@@ -5,6 +5,8 @@ var userRegistry = require('../DataAccess/userRegistry.js');
 var contractRegistry = require('../DataAccess/contractRegistry.js');
 var balanceIssuance = require('../Issuance/balanceContract.js');
 var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
+var util = require('../Util/util.js');
+var config = require('../config.js');
 
 var Web3 = require('web3');
 var fs = require('fs');
@@ -41,21 +43,27 @@ function getNameAndvalue(cb){
 
 function issueCryptoZAR(ownerAddress, cb){
   balanceIssuance.SubmitContract(ownerAddress, 0, function(balanceContract){
+
     web3.eth.defaultAccount = ownerAddress;
     cryptoZARIssuance.SubmitCryptoZARContract(balanceContract.address, function(xzaContract){
-      balanceContract.name = config.assets.cryptoZARBalance;
-      contractRegistry.AddContractToRegistry(balanceContract, function(res){
-        xzaContract.name = config.assets.cryptoZAR;
-        contractRegistry.AddContractToRegistry(xzaContract, function(res){
+
+      balanceContract.name = config.contractNames.cryptoZAR.balance.name;
+      balanceContract.version = config.contractNames.cryptoZAR.balance.version;
+      contractRegistry.AddContract(balanceContract, function(res){
+
+        xzaContract.name = config.contractNames.cryptoZAR.name;
+        xzaContract.version = config.contractNames.cryptoZAR.version;
+        contractRegistry.AddContract(xzaContract, function(res){
+
+          var xza = util.GetInstanceFromABI(xzaContract.abi, xzaContract.address);
+          // Change the owner of tha balance contract to the xzaContract.address
+          var balanceContractInstance = util.GetInstanceFromABI(balanceContract.abi
+            , balanceContract.address);
+
+          balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1});
           cb();
         });
       }); 
-      //var xza = util.GetInstanceFromABI(xzaContract.abi, xzaContract.address);
-      // Change the owner of tha balance contract to the xzaContract.address
-      //var balanceContractInstance = util.GetInstanceFromABI(balanceContract.abi
-      //  , balanceContract.address);
-      
-      //balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1});
     });
   });
 }
@@ -119,7 +127,9 @@ function handleLoggedInUser(cb){
       loggedInUser = null;
       run();
     } else if (answer == 2){
-      issueCryptoZAR(loggedInUser.address, function(res){
+      //var ownerAddress = loggedInUser.address;
+      var ownerAddress = web3.eth.coinbase;
+      issueCryptoZAR(ownerAddress, function(res){
         cb(res);
       });
     } else if (answer == 1){ // Send funds
@@ -133,9 +143,8 @@ function handleLoggedInUser(cb){
               , nameAndValue.value);
             accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
               , function(signedTx){
-              console.log('signedTx:', signedTx);
               web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-              if (err) {console.log('ERROR|SendRawTransaction:', err);}
+              if (err) {console.log('ERROR | SendRawTransaction:', err);}
                 console.log('Funds sent, tx hash:', hash);
                 cb();
               });
