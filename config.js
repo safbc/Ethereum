@@ -1,9 +1,12 @@
 var config = {};
 
 config.dbConnectionString = 'springblock';
-config.dbCollections = ['userRegistry'];
+config.dbCollections = ['userRegistry', 'contractRegistry'];
 
-config.zarIssuerUsername = 'zarissuer';
+config.contractNames = {
+  cryptoZARBalance: 'cryptoZARBalance',
+  cryptoZAR: 'cryptoZAR'
+};
 
 config.rpcaddress = 'http://localhost:20000';
 
