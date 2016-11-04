@@ -23,11 +23,9 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
-        console.log('userName: ', this.userName);
         this.userService.login(this.userName, this.password)
             .then(function (user) {
             _this.user = user;
-            console.log('user: ', _this.user);
         });
     };
     LoginComponent = __decorate([

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Transaction } from './transaction';
 import { TransactionService } from './transaction.service';
+
 @Component({
   moduleId: module.id,
   selector: 'my-dashboard',

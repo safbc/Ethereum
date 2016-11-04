@@ -28,11 +28,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    console.log('userName: ', this.userName);
     this.userService.login(this.userName, this.password)
       .then(user => {
         this.user = user;
-        console.log('user: ', this.user);
       });
   }
 }
