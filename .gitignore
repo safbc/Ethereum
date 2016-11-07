@@ -2,3 +2,4 @@ Blockchain/data/*
 *.swp
 **/ipfs/**
 node_modules/*
+npm-debug.log

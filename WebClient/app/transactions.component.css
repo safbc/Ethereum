@@ -2,30 +2,31 @@
   background-color: #CFD8DC !important;
   color: white;
 }
-.transactions {
-  margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 15em;
-}
-.transactions li {
+.transactions tr {
   cursor: pointer;
   position: relative;
   left: 0;
-  background-color: #EEE;
+  background-color: #F8F8F8;
   margin: .5em;
   padding: .3em 0;
   height: 1.6em;
-  border-radius: 4px;
 }
-.transactions li:hover {
+.transactions td {
+  padding-top:10px;
+  padding-bottom:10px;
+  padding-right:20px;
+}
+.transactions tr:hover {
   color: #607D8B;
   background-color: #DDD;
   left: .1em;
 }
-.transactions li.selected:hover {
+.transactions tr.selected {
   background-color: #BBD8DC !important;
-  color: white;
+  color: black;
+}
+.transactions tr.selected:hover {
+  background-color: #DDD !important;
 }
 .transactions .text {
   position: relative;
