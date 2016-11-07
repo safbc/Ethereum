@@ -27,12 +27,12 @@ function getContract(contractName, contractVersion, cb){
       });
     });
   } else {
-    db.cryptoZARRegistry.findOne(function(err, doc){
+    db.contractRegistry.findOne({name: contractName, version: contractVersion}, function(err, doc){
       logError(err);
       cb(doc);
     });
   }
-}*/
+}
 
 function addContract(entry, cb){
   if(!db){
