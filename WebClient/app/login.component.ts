@@ -14,6 +14,8 @@ import { UserService } from './user.service';
 export class LoginComponent implements OnInit {
 
   user: User;
+  userName: string;
+  password: string;
 
   constructor(
     private router: Router,
@@ -21,10 +23,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /** Check to see if the user is logged in **/
-
     this.userService.getUser()
       .then(user => this.user = user);
+  }
+
+  login(): void {
+    this.userService.login(this.userName, this.password)
+      .then(user => {
+        this.user = user;
+      });
   }
 }
 

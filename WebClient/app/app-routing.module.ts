@@ -7,7 +7,7 @@ import { TransactionsComponent }  from './transactions.component';
 import { TransactionDetailComponent }    from './transaction-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/transfer', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login',  component: LoginComponent },
   { path: 'transfer',  component: TransferComponent },
   { path: 'detail/:id', component: TransactionDetailComponent },
