@@ -19,6 +19,22 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+function getNameOrAddress(cb){
+  rl.question('Please enter a name or address: ', function(answer){
+    var obj = {
+      address: null,
+      name: null
+    }
+    console.log('answer.length:', answer.length);
+    if(answer.indexOf('0x') < 0){
+      obj.name = answer;
+    } else {
+      obj.address = answer;
+    }
+    cb(obj);
+  });
+}
+
 function getNameAndPassword(cb){
   rl.question('Please enter a name: ', function(name){
     rl.question('Please enter a password: ', function(password){
@@ -60,8 +76,10 @@ function issueCryptoZAR(ownerAddress, cb){
           var balanceContractInstance = util.GetInstanceFromABI(balanceContract.abi
             , balanceContract.address);
 
-          balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1});
-          cb();
+          balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1}
+            , function(err, res){
+            cb();
+          });
         });
       }); 
     });
@@ -121,11 +139,24 @@ function handleLoggedInUser(cb){
   rl.question('What would you like to do: '+
     '\n1) Send funds'+
     '\n2) Issue Crypto ZAR'+
+    '\n3) Get balance'+
     '\n0) Log out'+
     '\n> ', function(answer){
     if(answer == 0){
       loggedInUser = null;
       run();
+    } else if (answer == 3){
+      getNameOrAddress(function(nameOrAddress){
+        var contractName = config.contractNames.cryptoZAR.balance.name;
+        var contractVersion = config.contractNames.cryptoZAR.balance.version;
+        contractRegistry.GetContract(contractName, contractVersion, function(contract){
+          var xzaBalance = util.GetInstanceFromABI(contract.abi, contract.address);
+          if(nameOrAddress.address != null){
+            var balanceObj = xzaBalance.balanceOf(nameOrAddress.address);
+            console.log('Balance:', balance.c[0]);
+          }
+        });
+      });
     } else if (answer == 2){
       //var ownerAddress = loggedInUser.address;
       var ownerAddress = web3.eth.coinbase;
@@ -135,18 +166,27 @@ function handleLoggedInUser(cb){
     } else if (answer == 1){ // Send funds
       getNameAndvalue(function(nameAndValue){
         userRegistry.GetUser(nameAndValue.name, function(toUser){
-          if(toUser == null){
+          if(nameAndValue.name.indexOf('0x') < 0 && toUser == null){
             console.log('ERROR: user not found:', nameAndValue.name);
             cb();
           } else {
-            var rawTx = txCreator.GetRawSendEther(loggedInUser.address, toUser.address
-              , nameAndValue.value);
-            accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
-              , function(signedTx){
-              web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-              if (err) {console.log('ERROR | SendRawTransaction:', err);}
-                console.log('Funds sent, tx hash:', hash);
-                cb();
+            if(nameAndValue.name.indexOf('0x') >= 0){ // Is a valid address
+              toUser = {
+                address: nameAndValue.name;
+              }
+            }
+            var name = config.contractNames.cryptoZAR.name;
+            var version = config.contractNames.cryptoZAR.version;
+            contractRegistry.GetContract(name, version, function(contract){
+              var rawTx = txCreator.GetRawContractTransfer(contract.abi, contract.address
+                , loggedInUser.address, toUser.address , nameAndValue.value);
+              accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+                , function(signedTx){
+                web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+                if (err) {console.log('ERROR | SendRawTransaction:', err);}
+                  console.log('Funds sent, tx hash:', hash);
+                  cb();
+                });
               });
             });
           }
