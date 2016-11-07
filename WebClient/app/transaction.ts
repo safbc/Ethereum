@@ -4,5 +4,6 @@ export class Transaction {
   from: string;
   to: string;
   asset: string;
+  amount: number;
 }
 
