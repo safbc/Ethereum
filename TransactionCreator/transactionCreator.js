@@ -30,6 +30,20 @@ function getRawContractTransfer(abi, contractAddress, fromAddress, toAddress, va
   });
 } 
 
+function adjustOwnerBalance(abi, contractAddress, fromAddress, increase, cb){
+  contractRawTx.GetContractInstance(abi, contractAddress, function(xza){
+    xza.adjustOwnerBalance(increase, function(rawTx){
+      rawTx.from = fromAddress;
+      var nonce = web3.eth.getTransactionCount(fromAddress);
+      rawTx.nonce = '0x'+nonce.toString(16);
+      var gasCost = web3.eth.estimateGas(rawTx);
+      rawTx.gasPrice = '0x'+padToEven(Number(1).toString(16));
+      rawTx.gasLimit = '0x'+padToEven(Number(gasCost).toString(16));
+      cb(rawTx);
+    });
+  });
+}
+
 function padToEven(n, z){
   return pad(n, n.length + n.length % 2, z);
 }
@@ -42,3 +56,4 @@ function pad(n, width, z) {
 
 exports.GetRawSendEther = getRawSendEther;
 exports.GetRawContractTransfer = getRawContractTransfer;
+exports.AdjustOwnerBalance = adjustOwnerBalance;

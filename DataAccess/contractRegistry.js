@@ -22,7 +22,7 @@ function connectToDB(cb){
 function getContract(contractName, contractVersion, cb){
   if(!db){
     connectToDB(function(){
-      getContract(function(res){
+      getContract(contractName, contractVersion, function(res){
         cb(res);
       });
     });
@@ -37,7 +37,7 @@ function getContract(contractName, contractVersion, cb){
 function addContract(entry, cb){
   if(!db){
     connectToDB(function(){
-      addContractToRegistry(entry, function(res){
+      addContract(entry, function(res){
         cb(res);
       });
     });

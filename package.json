@@ -15,7 +15,7 @@
   "homepage": "https://bitbucket.org/springblock/blockchaininfrastructure#readme",
   "dependencies": {
     "async": "^2.1.2",
-    "ethereum-transaction-creator": "0.0.3",
+    "ethereum-transaction-creator": "0.0.5",
     "ethereumjs-tx": "^1.1.2",
     "expect": "^1.20.2",
     "expect.js": "^0.3.1",
