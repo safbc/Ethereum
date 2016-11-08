@@ -24,6 +24,12 @@ var LoginComponent = (function () {
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.userService.login(this.userName, this.password)
+            .then(function (user) { _this.user = user; })
+            .catch(function (err) { console.log('Something went wrong trying to log user in:', err); });
+    };
+    LoginComponent.prototype.register = function () {
+        var _this = this;
+        this.userService.register(this.userName, this.password)
             .then(function (user) {
             _this.user = user;
         });
