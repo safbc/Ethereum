@@ -9,20 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Springblock Transaction Viewer';
+var router_1 = require('@angular/router');
+var IssueComponent = (function () {
+    function IssueComponent(router) {
+        this.router = router;
     }
-    AppComponent = __decorate([
+    IssueComponent.prototype.ngOnInit = function () {
+    };
+    IssueComponent.prototype.issue = function () {
+        console.log('issue button clicked');
+    };
+    IssueComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'my-app',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a routerLink=\"/login\" routerLinkActive=\"active\">Login</a>\n      <a routerLink=\"/transfer\" routerLinkActive=\"active\">Transfer</a>\n      <a routerLink=\"/transactions\" routerLinkActive=\"active\">Transactions</a>\n      <a routerLink=\"/issue\" routerLinkActive=\"active\">Issue Asset</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
-            styleUrls: ['app.component.css'],
+            selector: 'assetIssuance',
+            templateUrl: 'issue.component.html',
+            styleUrls: ['issue.component.css']
         }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [router_1.Router])
+    ], IssueComponent);
+    return IssueComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.IssueComponent = IssueComponent;
+//# sourceMappingURL=issue.component.js.map
