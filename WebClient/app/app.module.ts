@@ -5,6 +5,7 @@ import { FormsModule }    from '@angular/forms';
 import { AppComponent }                 from './app.component';
 import { LoginComponent }               from './login.component';
 import { TransferComponent }            from './transfer.component';
+import { IssueComponent }               from './issue.component';
 import { TransactionDetailComponent }   from './transaction-detail.component';
 import { TransactionsComponent }        from './transactions.component';
 import { UserService }                  from './user.service';
@@ -22,6 +23,7 @@ import { AppRoutingModule }             from './app-routing.module';
     AppComponent,
     LoginComponent,
     TransferComponent,
+    IssueComponent,
     TransactionDetailComponent,
     TransactionsComponent
   ],

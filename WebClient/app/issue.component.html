@@ -1,0 +1,22 @@
+
+<div class="row">
+  <div class="col-md-3 col-xs-8">
+    <h2>Issue new asset</h2>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>Asset name</td>
+          <td><input type="text" class="form-control" [(ngModel)]="assetName" /></td>
+        </tr>
+        <tr>
+          <td>Initial issuance</td>
+          <td><input type="number" class="form-control" [(ngModel)]="initialIssuance" /></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button (click)="issue() "type="button" class="btn btn-primary">Issue</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

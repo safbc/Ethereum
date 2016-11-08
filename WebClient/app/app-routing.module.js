@@ -13,13 +13,15 @@ var router_1 = require('@angular/router');
 var login_component_1 = require('./login.component');
 var transfer_component_1 = require('./transfer.component');
 var transactions_component_1 = require('./transactions.component');
+var issue_component_1 = require('./issue.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: 'transfer', component: transfer_component_1.TransferComponent },
     { path: 'detail/:id', component: transaction_detail_component_1.TransactionDetailComponent },
-    { path: 'transactions', component: transactions_component_1.TransactionsComponent }
+    { path: 'transactions', component: transactions_component_1.TransactionsComponent },
+    { path: 'issue', component: issue_component_1.IssueComponent },
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {

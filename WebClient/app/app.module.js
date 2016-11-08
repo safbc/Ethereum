@@ -14,6 +14,7 @@ var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
 var login_component_1 = require('./login.component');
 var transfer_component_1 = require('./transfer.component');
+var issue_component_1 = require('./issue.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var transactions_component_1 = require('./transactions.component');
 var user_service_1 = require('./user.service');
@@ -33,6 +34,7 @@ var AppModule = (function () {
                 app_component_1.AppComponent,
                 login_component_1.LoginComponent,
                 transfer_component_1.TransferComponent,
+                issue_component_1.IssueComponent,
                 transaction_detail_component_1.TransactionDetailComponent,
                 transactions_component_1.TransactionsComponent
             ],

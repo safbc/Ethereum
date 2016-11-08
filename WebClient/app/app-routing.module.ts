@@ -1,17 +1,20 @@
-import { NgModule }               from '@angular/core';
-import { RouterModule, Routes }   from '@angular/router';
+import { NgModule }                   from '@angular/core';
+import { RouterModule, Routes }       from '@angular/router';
 
-import { LoginComponent }         from './login.component';
-import { TransferComponent }      from './transfer.component';
-import { TransactionsComponent }  from './transactions.component';
-import { TransactionDetailComponent }    from './transaction-detail.component';
+import { LoginComponent }             from './login.component';
+import { TransferComponent }          from './transfer.component';
+import { TransactionsComponent }      from './transactions.component';
+import { IssueComponent }             from './issue.component';
+import { TransactionDetailComponent } from './transaction-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login',  component: LoginComponent },
-  { path: 'transfer',  component: TransferComponent },
-  { path: 'detail/:id', component: TransactionDetailComponent },
-  { path: 'transactions',     component: TransactionsComponent }
+  { path: '',             redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login',        component: LoginComponent },
+  { path: 'transfer',     component: TransferComponent },
+  { path: 'detail/:id',   component: TransactionDetailComponent },
+  { path: 'transactions', component: TransactionsComponent },
+  { path: 'issue',        component: IssueComponent },
+
 ];
 
 @NgModule({
