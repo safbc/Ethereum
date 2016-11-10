@@ -43,9 +43,8 @@ var LoginComponent = (function () {
             .map(function (response) { return response.json(); })
             .subscribe(function (data) {
             _this.response = data;
-            _this.randomQuote = _this.response.quote;
             console.log('response:', _this.response);
-        }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.randomQuote); });
+        }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.response); });
     };
     LoginComponent.prototype.logError = function (err) {
         console.error('There was an error: ' + err);

@@ -51,11 +51,10 @@ export class LoginComponent implements OnInit {
 			.subscribe(
 				data => {
             this.response = data;
-            this.randomQuote = this.response.quote;
             console.log('response:', this.response);
             },
 				err => this.logError(err),
-				() => console.log('Random Quote Complete', this.randomQuote)
+				() => console.log('Random Quote Complete', this.response)
 			);
   }
 
