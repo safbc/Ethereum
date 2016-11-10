@@ -1,0 +1,10 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Web Api's for the Springblock link to Ethereum - this will be extended to other blockchains in the future",
+  "main": "index.js",
+  "author": "",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
