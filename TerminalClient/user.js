@@ -149,8 +149,7 @@ function handleLoggedInUser(cb){
         }
       });
     } else if (answer == 2){
-      var ownerAddress = loggedInUser.address;
-      cryptoZARIssuance.DeployCryptoZARContract(ownerAddress, function(res){
+      cryptoZARIssuance.DeployCryptoZARContract(loggedInUser.address, function(res){
         cb(res);
       });
     } else if (answer == 1){ // Send funds
