@@ -13,6 +13,8 @@ var fs = require('fs');
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider(config.rpcaddress));
 
+etherDistribution.StartEtherDistribution();
+
 const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
@@ -45,9 +47,15 @@ function getNameAndPassword(cb){
   });
 }
 
-function getNameAndvalue(cb){
+function getValue(cb){
+  rl.question('Please enter a value: ', function(value){
+    cb(value);
+  });
+}
+
+function getNameAndValue(cb){
   rl.question('Please enter a name: ', function(name){
-    rl.question('Please enter a value: ', function(value){
+    getValue(function(value){
       cb({
         name: name, 
         value: value
@@ -96,14 +104,17 @@ function deployCryptoZAR(ownerAddress, cb){
 function handleIssungCryptoZAR(address, cb){
   var contractName = config.contractNames.cryptoZAR.name;
   var contractVersion = config.contractNames.cryptoZAR.version;
-  contractRegistry.GetContract(contractName, contractVersion, function(xzaContract){
-    txCreator.AdjustOwnerBalance(xzaContract.abi, xzaContract.address, loggedInUser.address, 10
-        , function(rawTx){
-      accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
-          , function(signedTx){
-        web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-        if (err) {console.log('ERROR | SendRawTransaction:', err);}
-          cb(hash);
+  getValue(function(sValue){
+    var value = Number(sValue);
+    contractRegistry.GetContract(contractName, contractVersion, function(xzaContract){
+      txCreator.AdjustOwnerBalance(xzaContract.abi, xzaContract.address, loggedInUser.address, value
+          , function(rawTx){
+        accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+            , function(signedTx){
+          web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+          if (err) {console.log('ERROR | SendRawTransaction:', err);}
+            cb(hash);
+          });
         });
       });
     });
@@ -184,6 +195,12 @@ function handleLoggedInUser(cb){
             var balanceObj = xzaBalance.balanceOf(nameOrAddress.address);
             console.log('Balance:', balanceObj.c[0]);
             cb(null);
+          } else {
+            userRegistry.GetUser(nameOrAddress.name, function(user){
+              var balanceObj = xzaBalance.balanceOf(user.address);
+              console.log('Balance:', balanceObj.c[0]);
+              cb(null);
+            }); 
           }
         });
       });
@@ -193,7 +210,7 @@ function handleLoggedInUser(cb){
         cb(res);
       });
     } else if (answer == 1){ // Send funds
-      getNameAndvalue(function(nameAndValue){
+      getNameAndValue(function(nameAndValue){
         userRegistry.GetUser(nameAndValue.name, function(toUser){
           if(nameAndValue.name.indexOf('0x') < 0 && toUser == null){
             console.log('ERROR: user not found:', nameAndValue.name);
@@ -229,7 +246,6 @@ function handleLoggedInUser(cb){
 }
 
 function run(){
-  etherDistribution.StartEtherDistribution();
   if(loggedInUser == null){
     handleNotLoggedInUser(function(res){
       run();
