@@ -10,11 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var http_1 = require("@angular/http");
 var user_service_1 = require('./user.service');
+require('rxjs/add/operator/map');
 var LoginComponent = (function () {
-    function LoginComponent(router, userService) {
+    function LoginComponent(router, userService, http) {
         this.router = router;
         this.userService = userService;
+        this.http = http;
     }
     LoginComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -34,6 +37,15 @@ var LoginComponent = (function () {
             _this.user = user;
         });
     };
+    LoginComponent.prototype.testHttp = function () {
+        var _this = this;
+        this.http.get('http://localhost:3002/api/randomquote.json')
+            .map(function (res) { return res.text(); })
+            .subscribe(function (data) { return _this.randomQuote = data; }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.randomQuote); });
+    };
+    LoginComponent.prototype.logError = function (err) {
+        console.error('There was an error: ' + err);
+    };
     LoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
@@ -41,7 +53,7 @@ var LoginComponent = (function () {
             templateUrl: 'login.component.html',
             styleUrls: ['login.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
+        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, http_1.Http])
     ], LoginComponent);
     return LoginComponent;
 }());

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {Http} from "@angular/http";
 
 import { User } from './user';
 import { UserService } from './user.service';
+import 'rxjs/add/operator/map';
 
 @Component({
   moduleId: module.id,
@@ -16,10 +18,12 @@ export class LoginComponent implements OnInit {
   user: User;
   userName: string;
   password: string;
+  randomQuote: string;
 
   constructor(
     private router: Router,
-    private userService: UserService) {
+    private userService: UserService, 
+    private http: Http) {
   }
 
   ngOnInit(): void {
@@ -39,5 +43,19 @@ export class LoginComponent implements OnInit {
         this.user = user;
       });
   }
+
+  testHttp(): void {
+    this.http.get('http://localhost:3002/api/randomquote.json')
+			.map(res => res.text())
+			.subscribe(
+				data => this.randomQuote = data,
+				err => this.logError(err),
+				() => console.log('Random Quote Complete', this.randomQuote)
+			);
+  }
+
+	logError(err:any) {
+		console.error('There was an error: ' + err);
+	}
 }
 
