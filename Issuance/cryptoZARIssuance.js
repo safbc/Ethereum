@@ -94,5 +94,16 @@ function deployCryptoZAR(ownerAddress, cb){
   });
 }
 
+function getBalance(address, cb){
+  var contractName = config.contractNames.cryptoZAR.balance.name;
+  var contractVersion = config.contractNames.cryptoZAR.balance.version;
+  contractRegistry.GetContract(contractName, contractVersion, function(contract){
+    var xzaBalance = util.GetInstanceFromABI(contract.abi, contract.address);
+    var balanceObj = xzaBalance.balanceOf(address);
+    cb(balanceObj);
+  });
+}
+
 exports.DeployCryptoZARContract = deployCryptoZAR;
 exports.HandleIssungCryptoZAR = handleIssungCryptoZAR;
+exports.GetBalance = getBalance;

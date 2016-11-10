@@ -134,22 +134,19 @@ function handleLoggedInUser(cb){
       }); 
     } else if (answer == 3){
       getNameOrAddress(function(nameOrAddress){
-        var contractName = config.contractNames.cryptoZAR.balance.name;
-        var contractVersion = config.contractNames.cryptoZAR.balance.version;
-        contractRegistry.GetContract(contractName, contractVersion, function(contract){
-          var xzaBalance = util.GetInstanceFromABI(contract.abi, contract.address);
-          if(nameOrAddress.address != null){
-            var balanceObj = xzaBalance.balanceOf(nameOrAddress.address);
+        if(nameOrAddress.address != null){
+          cryptoZARIssuance.GetBalance(nameOrAddress.address, function(balanceObj){
             console.log('Balance:', balanceObj.c[0]);
             cb(null);
-          } else {
-            userRegistry.GetUser(nameOrAddress.name, function(user){
-              var balanceObj = xzaBalance.balanceOf(user.address);
+          });
+        } else {
+          userRegistry.GetUser(nameOrAddress.name, function(user){
+            cryptoZARIssuance.GetBalance(user.address, function(balanceObj){
               console.log('Balance:', balanceObj.c[0]);
               cb(null);
-            }); 
-          }
-        });
+            });
+          }); 
+        }
       });
     } else if (answer == 2){
       var ownerAddress = loggedInUser.address;
