@@ -155,35 +155,24 @@ function handleLoggedInUser(cb){
     } else if (answer == 1){ // Send funds
       getNameAndValue(function(nameAndValue){
         userRegistry.GetUser(nameAndValue.name, function(toUser){
-          if(nameAndValue.name.indexOf('0x') < 0 && toUser == null){
-            console.log('ERROR: user not found:', nameAndValue.name);
-            cb();
+          var value = nameAndValue.value;
+          var toAddress = null;
+          if(toUser != null){
+            toAddress = toUser.address;
+          } else if (nameAndValue.name.indexOf('0x') >= 0){
+            toAddress = nameAndValue.name;
           } else {
-            if(nameAndValue.name.indexOf('0x') >= 0){ // Is a valid address
-              toUser = {
-                address: nameAndValue.name
-              }
-            }
-            var name = config.contractNames.cryptoZAR.name;
-            var version = config.contractNames.cryptoZAR.version;
-            contractRegistry.GetContract(name, version, function(contract){
-              txCreator.GetRawContractTransfer(contract.abi, contract.address
-                  , loggedInUser.address, toUser.address , nameAndValue.value, function(rawTx){
-                accountManagement.SignRawTransaction(rawTx, loggedInUser.address
-                  , loggedInUser.password, function(signedTx){
-                  web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-                  if (err) {console.log('ERROR | SendRawTransaction:', err);}
-                    console.log('Funds sent, tx hash:', hash);
-                    cb();
-                  });
-                });
-              });
-            });
-          }
+            console.log('ERROR: user not found:', nameAndValue.name);
+            cb(null);
+            return;
+          } 
+          cryptoZARIssuance.Send(loggedInUser, toAddress, value, function(res){
+            cb(res);
+          }); 
         });
       });
     } else {
-      cb();
+      cb(null);
     }
   });
 }

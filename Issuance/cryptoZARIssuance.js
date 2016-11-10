@@ -104,6 +104,24 @@ function getBalance(address, cb){
   });
 }
 
+function sendFunds(loggedInUser, toAddress, value, cb){
+  var name = config.contractNames.cryptoZAR.name;
+  var version = config.contractNames.cryptoZAR.version;
+  contractRegistry.GetContract(name, version, function(contract){
+    txCreator.GetRawContractTransfer(contract.abi, contract.address, loggedInUser.address, toAddress 
+        , value, function(rawTx){
+      accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+          , function(signedTx){
+        web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+        if (err) {console.log('ERROR | SendRawTransaction:', err);}
+          cb(hash);
+        });
+      });
+    });
+  });
+}
+
 exports.DeployCryptoZARContract = deployCryptoZAR;
 exports.HandleIssungCryptoZAR = handleIssungCryptoZAR;
 exports.GetBalance = getBalance;
+exports.Send = sendFunds;
