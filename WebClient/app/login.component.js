@@ -40,8 +40,12 @@ var LoginComponent = (function () {
     LoginComponent.prototype.testHttp = function () {
         var _this = this;
         this.http.get('http://localhost:3002/api/randomquote.json')
-            .map(function (res) { return res.text(); })
-            .subscribe(function (data) { return _this.randomQuote = data; }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.randomQuote); });
+            .map(function (response) { return response.json(); })
+            .subscribe(function (data) {
+            _this.response = data;
+            _this.randomQuote = _this.response.quote;
+            console.log('response:', _this.response);
+        }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.randomQuote); });
     };
     LoginComponent.prototype.logError = function (err) {
         console.error('There was an error: ' + err);

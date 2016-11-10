@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {Http} from "@angular/http";
+import { Http, Response } from "@angular/http";
 
 import { User } from './user';
 import { UserService } from './user.service';
@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   userName: string;
   password: string;
   randomQuote: string;
+  response: Response;
 
   constructor(
     private router: Router,
@@ -46,9 +47,13 @@ export class LoginComponent implements OnInit {
 
   testHttp(): void {
     this.http.get('http://localhost:3002/api/randomquote.json')
-			.map(res => res.text())
+      .map(response => response.json())
 			.subscribe(
-				data => this.randomQuote = data,
+				data => {
+            this.response = data;
+            this.randomQuote = this.response.quote;
+            console.log('response:', this.response);
+            },
 				err => this.logError(err),
 				() => console.log('Random Quote Complete', this.randomQuote)
 			);
