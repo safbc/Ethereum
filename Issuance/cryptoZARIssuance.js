@@ -1,3 +1,8 @@
+var accountManagement = require('../AccountManagement/accountManagement.js');
+var txCreator = require('../TransactionCreator/transactionCreator.js');
+var contractRegistry = require('../DataAccess/contractRegistry.js');
+var config = require('../config.js');
+
 var Web3 = require('web3');
 var fs = require('fs');
 var web3 = new Web3();
@@ -31,4 +36,22 @@ function submitCryptoZARContract(balanceContractAddress, cb){
   });
 }
 
+function handleIssungCryptoZAR(loggedInUser, value, cb){
+  var contractName = config.contractNames.cryptoZAR.name;
+  var contractVersion = config.contractNames.cryptoZAR.version;
+  contractRegistry.GetContract(contractName, contractVersion, function(xzaContract){
+    txCreator.AdjustOwnerBalance(xzaContract.abi, xzaContract.address, loggedInUser.address, value
+        , function(rawTx){
+      accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+          , function(signedTx){
+        web3.eth.sendRawTransaction(signedTx, function(err, hash) {
+        if (err) {console.log('ERROR | SendRawTransaction:', err);}
+          cb(hash);
+        });
+      });
+    });
+  });
+}
+
 exports.SubmitCryptoZARContract = submitCryptoZARContract;
+exports.HandleIssungCryptoZAR = handleIssungCryptoZAR;

@@ -101,25 +101,6 @@ function deployCryptoZAR(ownerAddress, cb){
   });
 }
 
-function handleIssungCryptoZAR(address, cb){
-  var contractName = config.contractNames.cryptoZAR.name;
-  var contractVersion = config.contractNames.cryptoZAR.version;
-  getValue(function(sValue){
-    var value = Number(sValue);
-    contractRegistry.GetContract(contractName, contractVersion, function(xzaContract){
-      txCreator.AdjustOwnerBalance(xzaContract.abi, xzaContract.address, loggedInUser.address, value
-          , function(rawTx){
-        accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
-            , function(signedTx){
-          web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-          if (err) {console.log('ERROR | SendRawTransaction:', err);}
-            cb(hash);
-          });
-        });
-      });
-    });
-  });
-}
 
 var loggedInUser = null;
 
@@ -182,8 +163,11 @@ function handleLoggedInUser(cb){
       loggedInUser = null;
       cb(null);
     } else if (answer == 4){
-      handleIssungCryptoZAR(loggedInUser.address, function(res){
-        cb(res);
+      getValue(function(sValue){
+        var value = Number(sValue);
+        cryptoZARIssuance.HandleIssungCryptoZAR(loggedInUser, value, function(res){
+          cb(res);
+        }); 
       }); 
     } else if (answer == 3){
       getNameOrAddress(function(nameOrAddress){
