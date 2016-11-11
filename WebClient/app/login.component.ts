@@ -38,16 +38,9 @@ export class LoginComponent implements OnInit {
   }
 
   register(): void {
-    this.userService.register(this.userName, this.password)
-      .then(user => {
-        this.user = user;
-      });
-  }
-
-  testHttp(): void {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    let body = JSON.stringify({'userName' : 'RMB', 'password' : '12345'});
+    let body = JSON.stringify({'userName' : this.userName, 'password' : this.password});
     console.log(body);
     this.http.post('http://localhost:3032/registerNewUser', body , options)
       .map(response => response.json())
@@ -55,10 +48,22 @@ export class LoginComponent implements OnInit {
 				data => {
             this.response = data;
             console.log('response:', this.response);
+            if(data["err"] && data["err"] != ''){
+              console.log('An error occured: ', data["err"]);
+            } else {
+              this.user.name = data["name"];
+              this.user.isLoggedIn = true;
+              this.user.address = data["address"];
+              console.log('user:', this.user);
+            }
             },
 				err => this.logError(err),
-				() => console.log('Random Quote Complete', this.response)
+				() => console.log('User (Raw)', this.response)
 			);
+    this.userService.register(this.userName, this.password)
+      .then(user => {
+        this.user = user;
+      });
   }
 
 	logError(err:any) {

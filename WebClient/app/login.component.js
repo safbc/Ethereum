@@ -32,23 +32,29 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.register = function () {
         var _this = this;
-        this.userService.register(this.userName, this.password)
-            .then(function (user) {
-            _this.user = user;
-        });
-    };
-    LoginComponent.prototype.testHttp = function () {
-        var _this = this;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var body = JSON.stringify({ 'userName': 'RMB', 'password': '12345' });
+        var body = JSON.stringify({ 'userName': this.userName, 'password': this.password });
         console.log(body);
         this.http.post('http://localhost:3032/registerNewUser', body, options)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) {
             _this.response = data;
             console.log('response:', _this.response);
-        }, function (err) { return _this.logError(err); }, function () { return console.log('Random Quote Complete', _this.response); });
+            if (data["err"] && data["err"] != '') {
+                console.log('An error occured: ', data["err"]);
+            }
+            else {
+                _this.user.name = data["name"];
+                _this.user.isLoggedIn = true;
+                _this.user.address = data["address"];
+                console.log('user:', _this.user);
+            }
+        }, function (err) { return _this.logError(err); }, function () { return console.log('User (Raw)', _this.response); });
+        this.userService.register(this.userName, this.password)
+            .then(function (user) {
+            _this.user = user;
+        });
     };
     LoginComponent.prototype.logError = function (err) {
         console.error('There was an error: ' + err);
