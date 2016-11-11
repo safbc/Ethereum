@@ -10,10 +10,10 @@ app.get('/login', function (req, res) {
     if(user){
       loggedInUser = user; 
         etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
-          res.send('user logged in and account topped up with ether');
+          res.json({'msg': 'user logged in and account topped up with ether'});
         });
     } else {
-      res.send('invalid username or password');
+      res.json({'err': 'invalid username or password'});
     }
   }); 
 })
