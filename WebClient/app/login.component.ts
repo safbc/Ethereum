@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Response } from "@angular/http";
-
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { User } from './user';
 import { UserService } from './user.service';
 import 'rxjs/add/operator/map';
@@ -46,7 +45,11 @@ export class LoginComponent implements OnInit {
   }
 
   testHttp(): void {
-    this.http.get('http://localhost:3002/api/randomquote.json')
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify({'userName' : 'RMB', 'password' : '12345'});
+    console.log(body);
+    this.http.post('http://localhost:3032/registerNewUser', body , options)
       .map(response => response.json())
 			.subscribe(
 				data => {

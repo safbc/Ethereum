@@ -39,7 +39,11 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.testHttp = function () {
         var _this = this;
-        this.http.get('http://localhost:3002/api/randomquote.json')
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var body = JSON.stringify({ 'userName': 'RMB', 'password': '12345' });
+        console.log(body);
+        this.http.post('http://localhost:3032/registerNewUser', body, options)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) {
             _this.response = data;
