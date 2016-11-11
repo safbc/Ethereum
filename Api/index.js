@@ -34,11 +34,21 @@ app.get('/login', function (req, res) {
 })
 
 app.post('/registerNewUser', function(req, res){
-  console.log('registerNewUser hit');
-  console.log(req.body);      // your JSON
   if(req.body){
-		res.json(req.body);    // echo the result back
-  } else {
+		console.log('userName', req.body.userName);
+		console.log('password', req.body.password);
+		var userNameAndPassword = {
+			name: req.body.userName,
+			password: req.body.password
+		};
+		accountManagement.HandleUserRegistration(userNameAndPassword, function(user){
+			if(user){
+				res.json(user);
+			} else {
+				res.json({'err': 'That username is already registered on the system'});
+			}
+		});   
+	} else {
 		res.json({'err': 'There was nothing in the body'});
   }
 });
