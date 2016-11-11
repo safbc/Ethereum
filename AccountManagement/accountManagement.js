@@ -64,18 +64,22 @@ function isAddressInCache(address){
   }
 }
 
-function userLogin(name, password, cb){
+function login(name, password, cb){
   userRegistry.GetUserAndPassword(name, password, function(user){
-    accounts[user.address] = {
-      privateKey: user.privateKey, 
-      password: password
-    };
-    var obj = {
-      name: user.name,
-      address: user.address,
-      password: password
-    }
-    cb(obj);   
+    if(user){
+      accounts[user.address] = {
+        privateKey: user.privateKey, 
+        password: password
+      };
+      var obj = {
+        name: user.name,
+        address: user.address,
+        password: password
+      }
+      cb(obj); 
+    } else {
+      cb(null);
+    }  
   });
 }
 
@@ -113,5 +117,5 @@ function signRawTransaction(rawTx, senderAddress, password, cb){
 exports.NewAccount = newAccount;
 exports.SignRawTransaction = signRawTransaction;
 exports.HandleUserRegistration = handleUserRegistration;
-exports.Login = userLogin;
+exports.Login = login;
 exports.IsAddressInCache = isAddressInCache;
