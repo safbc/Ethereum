@@ -19,7 +19,7 @@ describe('Ether distribution:', function() {
   it('Should allow adding another account and that account should then be funded', function(done){
     var account = accountManagement.NewAccount(password);
     accounts.push(account);
-    etherDistribution.AddAccountToWatch(account, function(res){
+    etherDistribution.AddAccountToWatch(account, function(errInEtherDistribution){
       events.once('100msDelayedNewBlock', function(block, intent){
         web3.eth.getBalance(account, function(err, balance){ 
           expect(balance.c[0]).to.be(etherDistribution.DefaultBalance);

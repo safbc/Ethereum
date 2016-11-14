@@ -32,17 +32,22 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.userService.login(this.userName, this.password)
-      .then(user => { this.user = user; })
-      .catch(err => { console.log('Something went wrong trying to log user in:', err); });
+    this.callServer('login');
   }
 
   register(): void {
+    this.callServer('registerNewUser');
+  }
+
+	logError(err:any) {
+		console.error('There was an error: ' + err);
+	}
+
+  callServer(functionCall:string) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify({'userName' : this.userName, 'password' : this.password});
-    console.log(body);
-    this.http.post('http://localhost:3032/registerNewUser', body , options)
+    this.http.post('http://localhost:3032/' + functionCall, body , options)
       .map(response => response.json())
 			.subscribe(
 				data => {
@@ -60,14 +65,6 @@ export class LoginComponent implements OnInit {
 				err => this.logError(err),
 				() => console.log('User (Raw)', this.response)
 			);
-    this.userService.register(this.userName, this.password)
-      .then(user => {
-        this.user = user;
-      });
   }
-
-	logError(err:any) {
-		console.error('There was an error: ' + err);
-	}
 }
 

@@ -25,18 +25,20 @@ var LoginComponent = (function () {
             .then(function (user) { return _this.user = user; });
     };
     LoginComponent.prototype.login = function () {
-        var _this = this;
-        this.userService.login(this.userName, this.password)
-            .then(function (user) { _this.user = user; })
-            .catch(function (err) { console.log('Something went wrong trying to log user in:', err); });
+        this.callServer('login');
     };
     LoginComponent.prototype.register = function () {
+        this.callServer('registerNewUser');
+    };
+    LoginComponent.prototype.logError = function (err) {
+        console.error('There was an error: ' + err);
+    };
+    LoginComponent.prototype.callServer = function (functionCall) {
         var _this = this;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var body = JSON.stringify({ 'userName': this.userName, 'password': this.password });
-        console.log(body);
-        this.http.post('http://localhost:3032/registerNewUser', body, options)
+        this.http.post('http://localhost:3032/' + functionCall, body, options)
             .map(function (response) { return response.json(); })
             .subscribe(function (data) {
             _this.response = data;
@@ -51,13 +53,6 @@ var LoginComponent = (function () {
                 console.log('user:', _this.user);
             }
         }, function (err) { return _this.logError(err); }, function () { return console.log('User (Raw)', _this.response); });
-        this.userService.register(this.userName, this.password)
-            .then(function (user) {
-            _this.user = user;
-        });
-    };
-    LoginComponent.prototype.logError = function (err) {
-        console.error('There was an error: ' + err);
     };
     LoginComponent = __decorate([
         core_1.Component({

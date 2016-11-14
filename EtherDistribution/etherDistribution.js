@@ -13,8 +13,8 @@ var accounts = {};
 
 function addAccountToWatch(account, cb){
   accounts[account] = defaultBalance;
-  checkAndFundAccount(account, function(res){
-    cb(res);
+  checkAndFundAccount(account, function(err){
+    cb(err);
   });
 }
 
@@ -25,19 +25,22 @@ function removeAccountFromWatchList(account){
 
 function checkAndFundAccount(address, cb){
   web3.eth.getBalance(address, function(err, balance){
-    if(err){console.log('ERROR:', err)}
-    if(balance.c[0] < minimumBalance){
-      var value = accounts[address] - balance.c[0];
-      var tx = {
-        from: web3.eth.coinbase,
-        to: address,
-        value: value
-      };
-      web3.eth.sendTransaction(tx, function(err, txHash){
-        cb(null);
-      });
+    if(err){
+      cb(err);
     } else {
-      cb(null);
+      if(balance.c[0] < minimumBalance){
+        var value = accounts[address] - balance.c[0];
+        var tx = {
+          from: web3.eth.coinbase,
+          to: address,
+          value: value
+        };
+        web3.eth.sendTransaction(tx, function(err, txHash){
+          cb(null);
+        });
+      } else {
+        cb(null);
+      }
     }
   }); 
 }
@@ -53,8 +56,8 @@ function startEtherDistribution(){
           web3.eth.getTransaction(txid, function(err, txDetail){
             if(err){console.log('ERROR:', err)}
             if(accounts[txDetail.from] && accounts[txDetail.from] > 0){
-              checkAndFundAccount(txDetail.from, function(res){
-                cb(res);
+              checkAndFundAccount(txDetail.from, function(err){
+                cb(err);
               });
             } else {
               cb(null);

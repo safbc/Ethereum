@@ -66,7 +66,7 @@ function getNameAndValue(cb){
 
 
 var loggedInUser = null;
-
+var errAddingAccountToWatchList = 'There was a problem accessing the blockchain.  Please check that the blockchain node is running';
 function handleNotLoggedInUser(cb){
   rl.question('What would you like to do: '+
     '\n1) Register new user'+
@@ -84,7 +84,10 @@ function handleNotLoggedInUser(cb){
           if(newUser){
             loggedInUser = nameAndPassword;
             loggedInUser.address = newUser.address;
-            etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
+            etherDistribution.AddAccountToWatch(loggedInUser.address, function(err){
+              if(err){
+                console.log(errAddingAccountToWatchList);
+              }
               cb();
             });
           } else {
@@ -97,7 +100,10 @@ function handleNotLoggedInUser(cb){
       getNameAndPassword(function(nameAndPassword){
         accountManagement.Login(nameAndPassword.name, nameAndPassword.password, function(user){
           loggedInUser = user; 
-            etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
+            etherDistribution.AddAccountToWatch(loggedInUser.address, function(err){
+              if(err){
+                console.log(errAddingAccountToWatchList);
+              }
               cb();
             });
         }); 

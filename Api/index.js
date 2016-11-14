@@ -18,14 +18,18 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-app.get('/login', function (req, res) {
-  var userName = 'peter';
-  var password = '12345';
+app.post('/login', function (req, res) {
+  var userName = req.body.userName;
+  var password = req.body.password;
   accountManagement.Login(userName, password, function(user){
     if(user){
       loggedInUser = user; 
-        etherDistribution.AddAccountToWatch(loggedInUser.address, function(res){
-          res.json({'msg': 'user logged in and account topped up with ether'});
+        etherDistribution.AddAccountToWatch(loggedInUser.address, function(err){
+					if(err){
+						res.json({'err': 'There was an error accessing this account - please check that the blockchain node is running'});
+					} else {
+						res.json(user);
+					}
         });
     } else {
       res.json({'err': 'invalid username or password'});
