@@ -35,6 +35,7 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.callServer = function (functionCall) {
         var _this = this;
+        this.errMsg = "";
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var body = JSON.stringify({ 'userName': this.userName, 'password': this.password });
@@ -45,6 +46,7 @@ var LoginComponent = (function () {
             console.log('response:', _this.response);
             if (data["err"] && data["err"] != '') {
                 console.log('An error occured: ', data["err"]);
+                _this.errMsg = data["err"];
             }
             else {
                 _this.user.name = data["name"];

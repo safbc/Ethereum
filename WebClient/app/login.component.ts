@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   user: User;
   userName: string;
   password: string;
+  errMsg: string;
   randomQuote: string;
   response: Response;
 
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
 	}
 
   callServer(functionCall:string) {
+    this.errMsg = "";
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify({'userName' : this.userName, 'password' : this.password});
@@ -55,6 +57,7 @@ export class LoginComponent implements OnInit {
             console.log('response:', this.response);
             if(data["err"] && data["err"] != ''){
               console.log('An error occured: ', data["err"]);
+              this.errMsg = data["err"];
             } else {
               this.user.name = data["name"];
               this.user.isLoggedIn = true;

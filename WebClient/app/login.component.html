@@ -7,7 +7,8 @@
       </h2>
     </div>
     <div *ngIf="!user || user.isLoggedIn==false">
-    <h2>Login</h2>
+      <h2>Login</h2>
+      <div class="alert alert-warning" *ngIf="errMsg && errMsg!=''">{{errMsg}}</div>
       <table class="table table-striped">
         <tbody>
           <tr>
