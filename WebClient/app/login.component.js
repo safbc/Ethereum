@@ -10,14 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var http_1 = require("@angular/http");
 var user_service_1 = require('./user.service');
-require('rxjs/add/operator/map');
 var LoginComponent = (function () {
-    function LoginComponent(router, userService, http) {
+    function LoginComponent(router, userService) {
         this.router = router;
         this.userService = userService;
-        this.http = http;
     }
     LoginComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -25,25 +22,9 @@ var LoginComponent = (function () {
             .then(function (user) { return _this.user = user; });
     };
     LoginComponent.prototype.login = function () {
-        this.callServer('login');
-    };
-    LoginComponent.prototype.register = function () {
-        this.callServer('registerNewUser');
-    };
-    LoginComponent.prototype.logError = function (err) {
-        console.error('There was an error: ' + err);
-    };
-    LoginComponent.prototype.callServer = function (functionCall) {
         var _this = this;
-        this.errMsg = "";
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var body = JSON.stringify({ 'userName': this.userName, 'password': this.password });
-        this.http.post('http://localhost:3032/' + functionCall, body, options)
-            .map(function (response) { return response.json(); })
+        this.userService.login(this.userName, this.password)
             .subscribe(function (data) {
-            _this.response = data;
-            console.log('response:', _this.response);
             if (data["err"] && data["err"] != '') {
                 console.log('An error occured: ', data["err"]);
                 _this.errMsg = data["err"];
@@ -52,9 +33,25 @@ var LoginComponent = (function () {
                 _this.user.name = data["name"];
                 _this.user.isLoggedIn = true;
                 _this.user.address = data["address"];
-                console.log('user:', _this.user);
             }
-        }, function (err) { return _this.logError(err); }, function () { return console.log('User (Raw)', _this.response); });
+        }, function (err) { _this.errMsg = err.Message; });
+        /**    this.callServer('login'); **/
+    };
+    LoginComponent.prototype.register = function () {
+        var _this = this;
+        this.userService.register(this.userName, this.password)
+            .subscribe(function (data) {
+            if (data["err"] && data["err"] != '') {
+                console.log('An error occured: ', data["err"]);
+                _this.errMsg = data["err"];
+            }
+            else {
+                _this.user.name = data["name"];
+                _this.user.isLoggedIn = true;
+                _this.user.address = data["address"];
+            }
+        }, function (err) { _this.errMsg = err.Message; });
+        /**this.callServer('registerNewUser');**/
     };
     LoginComponent = __decorate([
         core_1.Component({
@@ -63,7 +60,7 @@ var LoginComponent = (function () {
             templateUrl: 'login.component.html',
             styleUrls: ['login.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService, http_1.Http])
+        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
     ], LoginComponent);
     return LoginComponent;
 }());

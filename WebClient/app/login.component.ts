@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { User } from './user';
 import { UserService } from './user.service';
-import 'rxjs/add/operator/map';
 
 @Component({
   moduleId: module.id,
@@ -19,12 +17,10 @@ export class LoginComponent implements OnInit {
   password: string;
   errMsg: string;
   randomQuote: string;
-  response: Response;
 
   constructor(
     private router: Router,
-    private userService: UserService, 
-    private http: Http) {
+    private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -33,18 +29,42 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.callServer('login');
+    this.userService.login(this.userName, this.password) 
+			.subscribe(
+				data => {
+          if(data["err"] && data["err"] != ''){
+            console.log('An error occured: ', data["err"]);
+            this.errMsg = data["err"];
+          } else {
+            this.user.name = data["name"];
+            this.user.isLoggedIn = true;
+            this.user.address = data["address"];
+          }
+        },
+				err => { this.errMsg = err.Message; }
+			);
+/**    this.callServer('login'); **/
   }
 
   register(): void {
-    this.callServer('registerNewUser');
+    this.userService.register(this.userName, this.password) 
+			.subscribe(
+				data => {
+          if(data["err"] && data["err"] != ''){
+            console.log('An error occured: ', data["err"]);
+            this.errMsg = data["err"];
+          } else {
+            this.user.name = data["name"];
+            this.user.isLoggedIn = true;
+            this.user.address = data["address"];
+          }
+        },
+				err => { this.errMsg = err.Message; }
+			);
+    /**this.callServer('registerNewUser');**/
   }
 
-	logError(err:any) {
-		console.error('There was an error: ' + err);
-	}
-
-  callServer(functionCall:string) {
+  /**callServer(functionCall:string) {
     this.errMsg = "";
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -68,6 +88,6 @@ export class LoginComponent implements OnInit {
 				err => this.logError(err),
 				() => console.log('User (Raw)', this.response)
 			);
-  }
+  }**/
 }
 

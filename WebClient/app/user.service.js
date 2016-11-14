@@ -10,30 +10,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var user_1 = require('./user');
+var http_1 = require("@angular/http");
+require('rxjs/add/operator/map');
 var UserService = (function () {
-    function UserService() {
+    function UserService(http) {
+        this.http = http;
     }
     UserService.prototype.getUser = function () {
-        if (!this.user) {
-            this.user = new user_1.User();
-            this.user.name = '';
-            this.user.isLoggedIn = false;
-        }
-        return Promise.resolve(this.user);
+        var user = new user_1.User();
+        user.isLoggedIn = false;
+        return Promise.resolve(user);
     };
     UserService.prototype.login = function (username, password) {
-        this.user.name = username;
-        this.user.isLoggedIn = true;
-        return Promise.resolve(this.user);
+        return this.callServer('login', username, password);
     };
     UserService.prototype.register = function (username, password) {
-        this.user.name = username;
-        this.user.isLoggedIn = true;
-        return Promise.resolve(this.user);
+        return this.callServer('registerNewUser', username, password);
+    };
+    UserService.prototype.callServer = function (functionCall, username, password) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var body = JSON.stringify({ 'userName': username, 'password': password });
+        var user = new user_1.User();
+        return this.http.post('http://localhost:3032/' + functionCall, body, options)
+            .map(function (response) { return response.json(); });
     };
     UserService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], UserService);
     return UserService;
 }());
