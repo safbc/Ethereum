@@ -33,9 +33,9 @@ var LoginComponent = (function () {
                 _this.user.name = data["name"];
                 _this.user.isLoggedIn = true;
                 _this.user.address = data["address"];
+                _this.userService.setUser(_this.user);
             }
         }, function (err) { _this.errMsg = err.Message; });
-        /**    this.callServer('login'); **/
     };
     LoginComponent.prototype.register = function () {
         var _this = this;

@@ -2,7 +2,6 @@ var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
 var txCreator = require('../TransactionCreator/transactionCreator.js');
 var userRegistry = require('../DataAccess/userRegistry.js');
-var contractRegistry = require('../DataAccess/contractRegistry.js');
 var balanceIssuance = require('../Issuance/balanceContract.js');
 var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
 var util = require('../Util/util.js');

@@ -10,6 +10,7 @@ import { IssueComponent }               from './issue.component';
 import { TransactionDetailComponent }   from './transaction-detail.component';
 import { TransactionsComponent }        from './transactions.component';
 import { UserService }                  from './user.service';
+import { AssetService }                 from './asset.service';
 import { TransactionService }           from './transaction.service';
 
 import { AppRoutingModule }             from './app-routing.module';
@@ -31,7 +32,8 @@ import { AppRoutingModule }             from './app-routing.module';
   ],
   providers: [ 
     TransactionService,
-    UserService
+    UserService,
+    AssetService
   ],
   bootstrap: [ AppComponent ]
 })

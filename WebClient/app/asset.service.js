@@ -9,41 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var user_1 = require('./user');
 var http_1 = require("@angular/http");
 require('rxjs/add/operator/map');
-var UserService = (function () {
-    function UserService(http) {
+var AssetService = (function () {
+    function AssetService(http) {
         this.http = http;
     }
-    UserService.prototype.getUser = function () {
-        if (!this.user) {
-            this.user = new user_1.User();
-            this.user.isLoggedIn = false;
-        }
-        return Promise.resolve(this.user);
-    };
-    UserService.prototype.setUser = function (user) {
-        this.user = user;
-    };
-    UserService.prototype.login = function (username, password) {
-        return this.callServer('login', username, password);
-    };
-    UserService.prototype.register = function (username, password) {
-        return this.callServer('registerNewUser', username, password);
-    };
-    UserService.prototype.callServer = function (functionCall, username, password) {
+    AssetService.prototype.createAsset = function (assetName, initialIssuance, userAddress) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var body = JSON.stringify({ 'userName': username, 'password': password });
-        return this.http.post('http://localhost:3032/' + functionCall, body, options)
+        var body = JSON.stringify({
+            'assetName': assetName,
+            'initialIssuance': initialIssuance,
+            'userAddress': userAddress
+        });
+        return this.http.post('http://localhost:3032/createAsset', body, options)
             .map(function (response) { return response.json(); });
     };
-    UserService = __decorate([
+    AssetService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], UserService);
-    return UserService;
+    ], AssetService);
+    return AssetService;
 }());
-exports.UserService = UserService;
-//# sourceMappingURL=user.service.js.map
+exports.AssetService = AssetService;
+//# sourceMappingURL=asset.service.js.map

@@ -19,6 +19,7 @@ var issue_component_1 = require('./issue.component');
 var transaction_detail_component_1 = require('./transaction-detail.component');
 var transactions_component_1 = require('./transactions.component');
 var user_service_1 = require('./user.service');
+var asset_service_1 = require('./asset.service');
 var transaction_service_1 = require('./transaction.service');
 var app_routing_module_1 = require('./app-routing.module');
 var AppModule = (function () {
@@ -42,7 +43,8 @@ var AppModule = (function () {
             ],
             providers: [
                 transaction_service_1.TransactionService,
-                user_service_1.UserService
+                user_service_1.UserService,
+                asset_service_1.AssetService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

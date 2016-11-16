@@ -39,11 +39,11 @@ export class LoginComponent implements OnInit {
             this.user.name = data["name"];
             this.user.isLoggedIn = true;
             this.user.address = data["address"];
+            this.userService.setUser(this.user);
           }
         },
 				err => { this.errMsg = err.Message; }
 			);
-/**    this.callServer('login'); **/
   }
 
   register(): void {

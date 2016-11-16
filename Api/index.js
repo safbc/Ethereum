@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
+var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -54,6 +55,20 @@ app.post('/registerNewUser', function(req, res){
 		});   
 	} else {
 		res.json({'err': 'There was nothing in the body'});
+  }
+});
+
+app.post('/createAsset', function(req, res){
+  if(req.body){
+		console.log('assetName', req.body.assetName);
+		console.log('initialIssuance', req.body.initialIssuance);
+		console.log('userAddress', req.body.userAddress);
+    //TODO: Change this from cryptoZarissuance to normal asset issuance
+    cryptoZARIssuance.DeployCryptoZARContract(req.body.userAddress, function(res){
+      res.json(res);
+    });
+  } else {
+  res.json({'err': 'These was nothing in the body'});
   }
 });
 
