@@ -17,6 +17,7 @@ var IssueComponent = (function () {
         this.router = router;
         this.userService = userService;
         this.assetService = assetService;
+        this.isProcessing = false;
     }
     IssueComponent.prototype.ngOnInit = function () {
     };
@@ -24,6 +25,7 @@ var IssueComponent = (function () {
         var _this = this;
         this.errMsg = "";
         this.msg = this.assetName + " is being issued onto the Springblock blockchain.....";
+        this.isProcessing = true;
         this.userService.getUser()
             .then(function (user) {
             _this.assetService.createAsset(_this.assetName, _this.initialIssuance, user.address)
@@ -31,12 +33,19 @@ var IssueComponent = (function () {
                 if (data["err"] && data["err"] != '') {
                     console.log('An error occured: ', data["err"]);
                     _this.errMsg = data["err"];
+                    _this.isProcessing = false;
                 }
                 else {
                     console.log('success: ', data);
                     _this.msg = data["msg"];
+                    _this.isProcessing = false;
+                    _this.assetName = "";
+                    _this.initialIssuance = 0;
                 }
-            }, function (err) { console.log(err.Message); });
+            }, function (err) {
+                console.log(err.Message);
+                _this.isProcessing = false;
+            });
         });
     };
     IssueComponent = __decorate([

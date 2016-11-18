@@ -111,9 +111,11 @@ function deployToken(ownerAddress, tokenName, initialIssuance, cb){
           balanceContractInstance.transferOwnership(tokenContract.address, {gas: 100000, gasPrice:1});
           // Change owner of the token contract to the ownerAddress
           var tokenContractInstance = util.GetInstanceFromABI(tokenContract.abi, tokenContract.address);
-          tokenContractInstance
-            .transferOwnership(ownerAddress, {gas: 100000, gasPrice:1}, function(err, res){
-            cb();
+          tokenContractInstance.transferOwnership(ownerAddress, {gas: 100000, gasPrice:1}, function(err, res){
+            //TODO: handle errors correctly here
+            tokenContractInstance.transfer(ownerAddress, initialIssuance, function(err, res){
+              cb();
+            });
           });
         });
       });

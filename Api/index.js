@@ -69,7 +69,7 @@ app.post('/createAsset', function(req, res){
       if(issuanceResult){
         res.json(issuanceResult);
       } else {
-        res.json({'msg': 'Token ' + req.body.assetName + ' succesfully issued'});
+        res.json({'msg': req.body.assetName + ' succesfully issued'});
       }
     });
   } else {

@@ -6,15 +6,15 @@
       <tbody>
         <tr>
           <td>Asset name</td>
-          <td><input type="text" class="form-control" [(ngModel)]="assetName" /></td>
+          <td><input type="text" class="form-control" [(ngModel)]="assetName" [disabled]="isProcessing" /></td>
         </tr>
         <tr>
           <td>Initial issuance</td>
-          <td><input type="number" class="form-control" [(ngModel)]="initialIssuance" /></td>
+          <td><input type="number" class="form-control" [(ngModel)]="initialIssuance" [disabled]="isProcessing"  /></td>
         </tr>
         <tr>
           <td></td>
-          <td><button (click)="issue() "type="button" class="btn btn-primary">Issue</button></td>
+          <td><button (click)="issue()" [disabled]="isProcessing" type="button" class="btn btn-primary">Issue</button></td>
         </tr>
         <tr>
           <td colspan="2">
