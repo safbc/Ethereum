@@ -16,6 +16,10 @@
           <td></td>
           <td><button (click)="issue() "type="button" class="btn btn-primary">Issue</button></td>
         </tr>
+        <tr>
+          <td colspan="2">
+            <div class="alert alert-success" *ngIf="msg && msg!=''">{{msg}}</div>
+            <div class="alert alert-danger" *ngIf="errMsg && errMsg!=''">{{errMsg}}</div>
       </tbody>
     </table>
   </div>

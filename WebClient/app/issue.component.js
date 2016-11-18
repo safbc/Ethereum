@@ -22,15 +22,19 @@ var IssueComponent = (function () {
     };
     IssueComponent.prototype.issue = function () {
         var _this = this;
+        this.errMsg = "";
+        this.msg = this.assetName + " is being issued onto the Springblock blockchain.....";
         this.userService.getUser()
             .then(function (user) {
             _this.assetService.createAsset(_this.assetName, _this.initialIssuance, user.address)
                 .subscribe(function (data) {
                 if (data["err"] && data["err"] != '') {
                     console.log('An error occured: ', data["err"]);
+                    _this.errMsg = data["err"];
                 }
                 else {
                     console.log('success: ', data);
+                    _this.msg = data["msg"];
                 }
             }, function (err) { console.log(err.Message); });
         });

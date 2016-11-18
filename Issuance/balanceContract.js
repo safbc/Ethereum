@@ -10,6 +10,10 @@ function submitContract(ownerAddress, initialSupply, cb){
     if(err){console.log("ERROR:", err);}
     web3.eth.defaultAccount = ownerAddress;
 
+    console.log('source:', source);
+
+    console.log('filePath:', filePath);
+
     var compiled = web3.eth.compile.solidity(source);
     var code = compiled.Balance.code;
     var abi = compiled.Balance.info.abiDefinition;

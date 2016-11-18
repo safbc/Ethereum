@@ -15,6 +15,8 @@ export class IssueComponent implements OnInit {
 
   assetName: string;
   initialIssuance: number;
+  msg: string;
+  errMsg: string;
 
   constructor(
     private router: Router,
@@ -26,6 +28,8 @@ export class IssueComponent implements OnInit {
   }
 
   issue(): void {
+    this.errMsg = "";
+    this.msg = this.assetName + " is being issued onto the Springblock blockchain.....";
     this.userService.getUser()
       .then(user => {
         this.assetService.createAsset(this.assetName, this.initialIssuance, user.address)
@@ -33,8 +37,10 @@ export class IssueComponent implements OnInit {
             data => {
               if(data["err"] && data["err"] != ''){
                 console.log('An error occured: ', data["err"]);
+                this.errMsg = data["err"];
               } else {
                 console.log('success: ', data);
+                this.msg = data["msg"];
               }
             },
             err => { console.log(err.Message); }

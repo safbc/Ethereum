@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
+etherDistribution.StartEtherDistribution();
+
 app.post('/login', function (req, res) {
   var userName = req.body.userName;
   var password = req.body.password;
@@ -63,9 +65,12 @@ app.post('/createAsset', function(req, res){
 		console.log('assetName', req.body.assetName);
 		console.log('initialIssuance', req.body.initialIssuance);
 		console.log('userAddress', req.body.userAddress);
-    //TODO: Change this from cryptoZarissuance to normal asset issuance
-    cryptoZARIssuance.DeployCryptoZARContract(req.body.userAddress, function(res){
-      res.json(res);
+    cryptoZARIssuance.DeployToken(req.body.userAddress, req.body.assetName, req.body.initialIssuance, function(issuanceResult){
+      if(issuanceResult){
+        res.json(issuanceResult);
+      } else {
+        res.json({'msg': 'Token ' + req.body.assetName + ' succesfully issued'});
+      }
     });
   } else {
   res.json({'err': 'These was nothing in the body'});
