@@ -88,7 +88,7 @@ function deployToken(ownerAddress, tokenName, initialIssuance, cb){
   // issue #9 (https://github.com/springblock/BlockchainInfrastructure/issues/9) is resolved)
   // and then transfer to ownerAddress
   web3.eth.defaultAccount = web3.eth.coinbase;
-  balanceIssuance.SubmitContract(web3.eth.coinbase, 0, function(balanceContract){
+  balanceIssuance.SubmitContract(web3.eth.coinbase, initialIssuance, function(balanceContract){
 
     web3.eth.defaultAccount = web3.eth.coinbase;
     submitTokenContract(balanceContract.address, function(tokenContract){
