@@ -4,6 +4,7 @@ var app = express()
 var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
 var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
+var contractRegistry = require('../DataAccess/contractRegistry.js');
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -20,6 +21,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 etherDistribution.StartEtherDistribution();
+
+app.get('/getListOfContracts', function (req, res) {
+	contractRegistry.GetListOfContracts(function(listOfContracts){
+		res.json(listOfContracts);
+	});
+})
 
 app.post('/login', function (req, res) {
   var userName = req.body.userName;

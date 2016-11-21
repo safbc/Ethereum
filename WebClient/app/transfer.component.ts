@@ -20,13 +20,9 @@ export class TransferComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.transactionService.getTransactions()
+    this.contractService.getListOfContracts()
       .then(transactions => this.transactions = transactions.slice(1, 5));
   }
 
-  gotoDetail(transaction: Transaction): void {
-    let link = ['/detail', transaction.id];
-    this.router.navigate(link);
-  }
 }
 

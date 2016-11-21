@@ -7,7 +7,12 @@
       <tbody>
         <tr>
           <td>Asset</td>
-          <td><input type="text" class="form-control text-right" value="RMB Test Token" disabled /></td>
+          <td>
+  					<input [(ngModel)]="selectedContract"
+         					 [typeahead]="contracts"
+         					 (typeaheadOnSelect)="typeaheadOnSelect($event)"
+         					 class="form-control">
+				  </td>
         </tr>
         <tr>
           <td>Current Balance</td>

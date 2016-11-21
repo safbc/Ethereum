@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AssetService {
 
+  
   constructor(
     private http: Http) {
   }
@@ -19,6 +20,13 @@ export class AssetService {
       'userAddress': userAddress
     });
     return this.http.post('http://localhost:3032/createAsset', body , options)
+      .map(response => response.json());
+  }
+
+  getListOfAssets(): Observable<Response> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get('http://localhost:3032/getListOfContracts', options)
       .map(response => response.json());
   }
 

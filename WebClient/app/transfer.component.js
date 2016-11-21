@@ -19,12 +19,8 @@ var TransferComponent = (function () {
     }
     TransferComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.transactionService.getTransactions()
+        this.contractService.getListOfContracts()
             .then(function (transactions) { return _this.transactions = transactions.slice(1, 5); });
-    };
-    TransferComponent.prototype.gotoDetail = function (transaction) {
-        var link = ['/detail', transaction.id];
-        this.router.navigate(link);
     };
     TransferComponent = __decorate([
         core_1.Component({

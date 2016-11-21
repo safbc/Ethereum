@@ -19,6 +19,52 @@ function connectToDB(cb){
   cb();
 }
 
+function checkForMatchingName(searchArray, name, arrayToUpdate, cb){
+  var wordIndex=searchArray.indexOf(name);
+	if(wordIndex>-1){
+		searchArray.splice(wordIndex, 1);
+    cb({'contractName': name});
+	} else {
+		arrayToUpdate.push(name);
+		cb(null);
+	}
+}
+
+function getListOfContracts(cb){
+  if(!db){
+    connectToDB(function(){
+      getListOfContracts(function(res){
+        cb(res);
+      });
+    });
+  } else {
+    db.contractRegistry.find({}, {"name": 1}, function(err, docs){
+      logError(err);
+      var contractNames = [];
+      var contractNamesTemp = [];
+      var contractNamesBalances = [];
+      for(var index=0;index<docs.length;index++){
+        var name = docs[index].name;
+        if(name.indexOf("Balance")>-1){
+          var cleanName = name.substring(0,name.indexOf("Balance"));
+					checkForMatchingName(contractNamesTemp, cleanName, contractNamesBalances, function(newName){
+						if(newName){
+							contractNames.push(newName);
+						}
+					});
+        } else {
+					checkForMatchingName(contractNamesBalances, name, contractNamesTemp, function(newName){
+						if(newName){
+							contractNames.push(newName);
+						}
+					});
+        }
+      }
+      cb(contractNames);
+    });
+  }
+}
+
 function getContract(contractName, contractVersion, cb){
   if(!db){
     connectToDB(function(){
@@ -72,5 +118,6 @@ function closeDB(){
 
 exports.GetContract = getContract;
 exports.AddContract =  addContract;
+exports.GetListOfContracts =  getListOfContracts;
 //exports.UpdateCryptoZAR =  updateCryptoZAR;
 exports.CloseDB = closeDB;
