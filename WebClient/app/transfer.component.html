@@ -8,10 +8,12 @@
         <tr>
           <td>Asset</td>
           <td>
-  					<input [(ngModel)]="selectedContract"
-         					 [typeahead]="contracts"
+            
+  					<input [(ngModel)]="selectedAsset"
+         					 [typeahead]="assets"
          					 (typeaheadOnSelect)="typeaheadOnSelect($event)"
          					 class="form-control">
+           
 				  </td>
         </tr>
         <tr>

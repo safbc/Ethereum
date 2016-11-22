@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { Transaction } from './transaction';
-import { TransactionService } from './transaction.service';
+import { TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { AssetService } from './asset.service';
+import { Observable } from 'rxjs/Observable';
+ 
+import { TypeaheadMatch } from '../../../components/typeahead/typeahead-match.class';
+import 'rxjs/add/observable/of';
 
 @Component({
   moduleId: module.id,
@@ -10,19 +13,32 @@ import { TransactionService } from './transaction.service';
   templateUrl: 'transfer.component.html',
   styleUrls: [ 'transfer.component.css' ]
 })
+
 export class TransferComponent implements OnInit {
 
-  transactions: Transaction[] = [];
+  private assets: Array<string> = [];
 
-  constructor(
-    private router: Router,
-    private transactionService: TransactionService) {
+  private selectedAsset: string='';
+
+  constructor(private router: Router, private assetService: AssetService) {
   }
 
   ngOnInit(): void {
-    this.contractService.getListOfContracts()
-      .then(transactions => this.transactions = transactions.slice(1, 5));
+    this.assetService.getListOfAssets()
+			.subscribe(
+				data => {
+          console.log('data:', data);
+          for(var index in data){
+            this.assets.push(data[index]["contractName"]);
+          }
+          console.log('assets: ', this.assets);
+        },
+				err => { console.log('err:', err); }
+      );
   }
 
+  typeaheadOnSelect(e: any) {
+    console.log('Selected value:', e);
+  }
 }
 

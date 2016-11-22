@@ -12,6 +12,7 @@ import { TransactionsComponent }        from './transactions.component';
 import { UserService }                  from './user.service';
 import { AssetService }                 from './asset.service';
 import { TransactionService }           from './transaction.service';
+import { TypeaheadModule }              from 'ng2-bootstrap/ng2-bootstrap';
 
 import { AppRoutingModule }             from './app-routing.module';
 
@@ -20,7 +21,8 @@ import { AppRoutingModule }             from './app-routing.module';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    TypeaheadModule
   ],
   declarations: [
     AppComponent,

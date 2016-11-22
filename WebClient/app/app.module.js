@@ -21,6 +21,7 @@ var transactions_component_1 = require('./transactions.component');
 var user_service_1 = require('./user.service');
 var asset_service_1 = require('./asset.service');
 var transaction_service_1 = require('./transaction.service');
+var ng2_bootstrap_1 = require('ng2-bootstrap/ng2-bootstrap');
 var app_routing_module_1 = require('./app-routing.module');
 var AppModule = (function () {
     function AppModule() {
@@ -31,7 +32,8 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 app_routing_module_1.AppRoutingModule,
-                http_1.HttpModule
+                http_1.HttpModule,
+                ng2_bootstrap_1.TypeaheadModule
             ],
             declarations: [
                 app_component_1.AppComponent,

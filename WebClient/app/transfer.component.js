@@ -10,17 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var transaction_service_1 = require('./transaction.service');
+var asset_service_1 = require('./asset.service');
+require('rxjs/add/observable/of');
 var TransferComponent = (function () {
-    function TransferComponent(router, transactionService) {
+    function TransferComponent(router, assetService) {
         this.router = router;
-        this.transactionService = transactionService;
-        this.transactions = [];
+        this.assetService = assetService;
+        this.assets = [];
+        this.selectedAsset = '';
     }
     TransferComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.contractService.getListOfContracts()
-            .then(function (transactions) { return _this.transactions = transactions.slice(1, 5); });
+        this.assetService.getListOfAssets()
+            .subscribe(function (data) {
+            console.log('data:', data);
+            for (var index in data) {
+                _this.assets.push(data[index]["contractName"]);
+            }
+            console.log('assets: ', _this.assets);
+        }, function (err) { console.log('err:', err); });
+    };
+    TransferComponent.prototype.typeaheadOnSelect = function (e) {
+        console.log('Selected value:', e);
     };
     TransferComponent = __decorate([
         core_1.Component({
@@ -29,7 +40,7 @@ var TransferComponent = (function () {
             templateUrl: 'transfer.component.html',
             styleUrls: ['transfer.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, transaction_service_1.TransactionService])
+        __metadata('design:paramtypes', [router_1.Router, asset_service_1.AssetService])
     ], TransferComponent);
     return TransferComponent;
 }());
