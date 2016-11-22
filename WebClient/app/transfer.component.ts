@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { AssetService } from './asset.service';
+import { UserService } from './user.service';
 
 @Component({
   moduleId: module.id,
@@ -14,26 +15,39 @@ export class TransferComponent implements OnInit {
 
   private assets: Array<string> = [];
   private selectedAsset: string='';
+	private assetBalance: number=0;
 
-  constructor(private router: Router, private assetService: AssetService) {
-  }
+  constructor(
+		private router: Router, 
+		private assetService: AssetService,
+		private userService: UserService) {  }
 
   ngOnInit(): void {
     this.assetService.getListOfAssets()
 			.subscribe(
 				data => {
-          console.log('data:', data);
+					this.assets = [];
           for(var index in data){
             this.assets.push(data[index]["contractName"]);
           }
-          console.log('assets: ', this.assets);
         },
 				err => { console.log('err:', err); }
       );
   }
 
   typeaheadOnSelect(e: any) {
-    console.log('Selected value:', e);
-  }
+    console.log('Selected value:', e.value);
+    this.userService.getUser()
+      .then(user => {
+				this.assetService.getAssetBalance(e.value, user.address)
+					.subscribe(
+						data => {
+							console.log('balance Data:', data);
+							this.assetBalance = data["balance"];
+						},
+						err => { console.log('err:', err); }
+					);
+		});
+	}
 }
 

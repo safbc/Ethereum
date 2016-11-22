@@ -32,6 +32,16 @@ var AssetService = (function () {
         return this.http.get('http://localhost:3032/getListOfContracts', options)
             .map(function (response) { return response.json(); });
     };
+    AssetService.prototype.getAssetBalance = function (assetName, userAddress) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var body = JSON.stringify({
+            'assetName': assetName,
+            'userAddress': userAddress
+        });
+        return this.http.post('http://localhost:3032/getAssetBalance', body, options)
+            .map(function (response) { return response.json(); });
+    };
     AssetService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
