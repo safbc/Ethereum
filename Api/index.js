@@ -3,7 +3,7 @@ var bodyParser = require('body-parser')
 var app = express()
 var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
-var cryptoZARIssuance = require('../Issuance/cryptoZARIssuance.js');
+var contractIssuance = require('../Issuance/contractIssuance.js');
 var contractRegistry = require('../DataAccess/contractRegistry.js');
 
 app.use(function (req, res, next) {
@@ -72,11 +72,27 @@ app.post('/createAsset', function(req, res){
 		console.log('assetName', req.body.assetName);
 		console.log('initialIssuance', req.body.initialIssuance);
 		console.log('userAddress', req.body.userAddress);
-    cryptoZARIssuance.DeployToken(req.body.userAddress, req.body.assetName, req.body.initialIssuance, function(issuanceResult){
+    contractIssuance.DeployToken(req.body.userAddress, req.body.assetName, req.body.initialIssuance, function(issuanceResult){
       if(issuanceResult){
         res.json(issuanceResult);
       } else {
         res.json({'msg': req.body.assetName + ' succesfully issued'});
+      }
+    });
+  } else {
+  res.json({'err': 'These was nothing in the body'});
+  }
+});
+
+app.post('/getAssetBalance', function(req, res){
+  if(req.body){
+		console.log('assetName', req.body.assetName);
+		console.log('userAddress', req.body.userAddress);
+    contractIssuance.GetBalance(req.body.userAddress, req.body.assetName, function(balance){
+      if(balance){
+        res.json({'balance': balance.c[0]});
+      } else {
+        res.json({'err': 'No balance found for ' + req.body.assetName + ' and user address: ' + req.body.userAddress});
       }
     });
   } else {

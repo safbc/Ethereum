@@ -11,26 +11,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var asset_service_1 = require('./asset.service');
+var user_service_1 = require('./user.service');
 var TransferComponent = (function () {
-    function TransferComponent(router, assetService) {
+    function TransferComponent(router, assetService, userService) {
         this.router = router;
         this.assetService = assetService;
+        this.userService = userService;
         this.assets = [];
         this.selectedAsset = '';
+        this.assetBalance = 0;
     }
     TransferComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.assetService.getListOfAssets()
             .subscribe(function (data) {
-            console.log('data:', data);
+            _this.assets = [];
             for (var index in data) {
                 _this.assets.push(data[index]["contractName"]);
             }
-            console.log('assets: ', _this.assets);
         }, function (err) { console.log('err:', err); });
     };
     TransferComponent.prototype.typeaheadOnSelect = function (e) {
-        console.log('Selected value:', e);
+        var _this = this;
+        console.log('Selected value:', e.value);
+        this.userService.getUser()
+            .then(function (user) {
+            _this.assetService.getAssetBalance(e.value, user.address)
+                .subscribe(function (data) {
+                console.log('balance Data:', data);
+                _this.assetBalance = data["balance"];
+            }, function (err) { console.log('err:', err); });
+        });
     };
     TransferComponent = __decorate([
         core_1.Component({
@@ -39,7 +50,7 @@ var TransferComponent = (function () {
             templateUrl: 'transfer.component.html',
             styleUrls: ['transfer.component.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, asset_service_1.AssetService])
+        __metadata('design:paramtypes', [router_1.Router, asset_service_1.AssetService, user_service_1.UserService])
     ], TransferComponent);
     return TransferComponent;
 }());

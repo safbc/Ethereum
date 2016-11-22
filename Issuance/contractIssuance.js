@@ -10,7 +10,7 @@ var fs = require('fs');
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:20000'));
 
-function submitCryptoZARContract(balanceContractAddress, cb){
+function submitTokenContract(balanceContractAddress, cb){
   var rootDirectory = __dirname.replace("Issuance", "");
   var filePath = rootDirectory + 'Contracts/token.sol';
   fs.readFile(filePath, 'utf8', function(err, source){
@@ -38,55 +38,39 @@ function submitCryptoZARContract(balanceContractAddress, cb){
   });
 }
 
-function handleIssungCryptoZAR(loggedInUser, value, cb){
-  var contractName = config.contractNames.cryptoZAR.name;
-  var contractVersion = config.contractNames.cryptoZAR.version;
-  contractRegistry.GetContract(contractName, contractVersion, function(xzaContract){
-    txCreator.AdjustOwnerBalance(xzaContract.abi, xzaContract.address, loggedInUser.address, value
-        , function(rawTx){
-      accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
-          , function(signedTx){
-        web3.eth.sendRawTransaction(signedTx, function(err, hash) {
-        if (err) {console.log('ERROR | SendRawTransaction:', err);}
-          cb(hash);
-        });
-      });
-    });
-  });
-}
-
-// This function needs to move to a central location
-function deployCryptoZAR(ownerAddress, cb){
+function deployToken(ownerAddress, tokenName, initialIssuance, cb){
   // First submit contract from web3.eth.coinbase (until 
   // issue #9 (https://github.com/springblock/BlockchainInfrastructure/issues/9) is resolved)
   // and then transfer to ownerAddress
   web3.eth.defaultAccount = web3.eth.coinbase;
-  balanceIssuance.SubmitContract(web3.eth.coinbase, 0, function(balanceContract){
+  balanceIssuance.SubmitContract(web3.eth.coinbase, initialIssuance, function(balanceContract){
 
     web3.eth.defaultAccount = web3.eth.coinbase;
-    submitCryptoZARContract(balanceContract.address, function(xzaContract){
+    submitTokenContract(balanceContract.address, function(tokenContract){
       // Add the balance contract to the contract registry
-      balanceContract.name = config.contractNames.cryptoZAR.balance.name;
-      balanceContract.version = config.contractNames.cryptoZAR.balance.version;
+      balanceContract.name = tokenName + 'Balance';
+      balanceContract.version = 1;
       contractRegistry.AddContract(balanceContract, function(res){
         // Add the crypto ZAR contract to the contract registry
-        xzaContract.name = config.contractNames.cryptoZAR.name;
-        xzaContract.version = config.contractNames.cryptoZAR.version;
-        contractRegistry.AddContract(xzaContract, function(res){
+        tokenContract.name = tokenName;
+        tokenContract.version = 1;
+        contractRegistry.AddContract(tokenContract, function(res){
 
-          var xza = util.GetInstanceFromABI(xzaContract.abi, xzaContract.address);
-          // Change the owner of the balance contract to the xzaContract.address
+          var token = util.GetInstanceFromABI(tokenContract.abi, tokenContract.address);
+          // Change the owner of the balance contract to the tokenContract.address
           var balanceContractInstance = util.GetInstanceFromABI(balanceContract.abi
             , balanceContract.address);
 
           // Once we are able to deploy the contract from the transaction creator we can use the 
           // estimate gas method here
-          balanceContractInstance.transferOwnership(xzaContract.address, {gas: 100000, gasPrice:1});
-          // Change owner of the xza contract to the ownerAddress
-          var xzaContractInstance = util.GetInstanceFromABI(xzaContract.abi, xzaContract.address);
-          xzaContractInstance
-            .transferOwnership(ownerAddress, {gas: 100000, gasPrice:1}, function(err, res){
-            cb();
+          balanceContractInstance.transferOwnership(tokenContract.address, {gas: 100000, gasPrice:1});
+          // Change owner of the token contract to the ownerAddress
+          var tokenContractInstance = util.GetInstanceFromABI(tokenContract.abi, tokenContract.address);
+          tokenContractInstance.transferOwnership(ownerAddress, {gas: 100000, gasPrice:1}, function(err, res){
+            //TODO: handle errors correctly here
+            tokenContractInstance.transfer(ownerAddress, initialIssuance, function(err, res){
+              cb();
+            });
           });
         });
       });
@@ -94,20 +78,19 @@ function deployCryptoZAR(ownerAddress, cb){
   });
 }
 
-function getBalance(address, cb){
-  var contractName = config.contractNames.cryptoZAR.balance.name;
-  var contractVersion = config.contractNames.cryptoZAR.balance.version;
+function getBalance(address, contractName, cb){
+  var contractVersion = 1; //TODO This needs to be fixed as per issue #11 https://github.com/springblock/BlockchainInfrastructure/issues/11
+  contractName += 'Balance';
   contractRegistry.GetContract(contractName, contractVersion, function(contract){
-    var xzaBalance = util.GetInstanceFromABI(contract.abi, contract.address);
-    var balanceObj = xzaBalance.balanceOf(address);
+    var balance = util.GetInstanceFromABI(contract.abi, contract.address);
+    var balanceObj = balance.balanceOf(address);
     cb(balanceObj);
   });
 }
 
-function sendFunds(loggedInUser, toAddress, value, cb){
-  var name = config.contractNames.cryptoZAR.name;
-  var version = config.contractNames.cryptoZAR.version;
-  contractRegistry.GetContract(name, version, function(contract){
+function sendFunds(loggedInUser, toAddress, contractName, value, cb){
+  var version = 1; //TODO This needs to be fixed as per issue #11 https://github.com/springblock/BlockchainInfrastructure/issues/11
+  contractRegistry.GetContract(contractName, version, function(contract){
     txCreator.GetRawContractTransfer(contract.abi, contract.address, loggedInUser.address, toAddress 
         , value, function(rawTx){
       accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
@@ -121,7 +104,6 @@ function sendFunds(loggedInUser, toAddress, value, cb){
   });
 }
 
-exports.DeployCryptoZARContract = deployCryptoZAR;
-exports.HandleIssungCryptoZAR = handleIssungCryptoZAR;
+exports.DeployToken = deployToken;
 exports.GetBalance = getBalance;
 exports.Send = sendFunds;
