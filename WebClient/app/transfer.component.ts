@@ -2,10 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { AssetService } from './asset.service';
-import { Observable } from 'rxjs/Observable';
- 
-import { TypeaheadMatch } from '../../../components/typeahead/typeahead-match.class';
-import 'rxjs/add/observable/of';
 
 @Component({
   moduleId: module.id,
@@ -17,7 +13,6 @@ import 'rxjs/add/observable/of';
 export class TransferComponent implements OnInit {
 
   private assets: Array<string> = [];
-
   private selectedAsset: string='';
 
   constructor(private router: Router, private assetService: AssetService) {

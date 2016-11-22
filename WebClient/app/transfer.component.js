@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var asset_service_1 = require('./asset.service');
-require('rxjs/add/observable/of');
 var TransferComponent = (function () {
     function TransferComponent(router, assetService) {
         this.router = router;
