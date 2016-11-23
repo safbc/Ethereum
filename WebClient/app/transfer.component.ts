@@ -16,6 +16,11 @@ export class TransferComponent implements OnInit {
   private assets: Array<string> = [];
   private selectedAsset: string='';
 	private assetBalance: number=0;
+  private counterparties: Array<any> = [];
+  private counterpartyNames: Array<string> = [];
+  private selectedCounterparty: string='';
+  private toUser: any;
+  private amountToTransfer: number=0;
 
   constructor(
 		private router: Router, 
@@ -33,9 +38,22 @@ export class TransferComponent implements OnInit {
         },
 				err => { console.log('err:', err); }
       );
+
+    this.userService.getListOfUsers()
+			.subscribe(
+				data => {
+					this.counterparties = [];
+					this.counterpartyNames = [];
+          for(var index in data){
+            this.counterparties.push(data[index]);
+            this.counterpartyNames.push(data[index]["name"]);
+          }
+        },
+				err => { console.log('err:', err); }
+      );
   }
 
-  typeaheadOnSelect(e: any) {
+  assetOnSelect(e: any) {
     console.log('Selected value:', e.value);
     this.userService.getUser()
       .then(user => {
@@ -48,6 +66,13 @@ export class TransferComponent implements OnInit {
 						err => { console.log('err:', err); }
 					);
 		});
+	}
+
+  counterpartyOnSelect(e: any) {
+    console.log('Selected user:', e.value);
+		var userIndex = this.counterparties.map(function(x) {return x.name; }).indexOf(e.value);
+		this.toUser = this.counterparties[userIndex];
+		console.log('this.toUser:', this.toUser);
 	}
 }
 

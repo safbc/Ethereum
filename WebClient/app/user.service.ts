@@ -27,14 +27,21 @@ export class UserService {
   }
 
   login(username:string , password:string): Observable<Response> {
-    return this.callServer('login', username, password);
+    return this.postToServer('login', username, password);
   }
 
   register(username:string , password:string): Observable<Response> {
-    return this.callServer('registerNewUser', username, password);
+    return this.postToServer('registerNewUser', username, password);
   }
 
-  callServer(functionCall:string, username: string, password: string): Observable<Response> {
+  getListOfUsers(): Observable<Response> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get('http://localhost:3032/getListOfUsers', options)
+      .map(response => response.json());
+  }
+
+  postToServer(functionCall:string, username: string, password: string): Observable<Response> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify({'userName' : username, 'password' : password});

@@ -5,6 +5,7 @@ var accountManagement = require('../AccountManagement/accountManagement.js');
 var etherDistribution = require('../EtherDistribution/etherDistribution.js');
 var contractIssuance = require('../Issuance/contractIssuance.js');
 var contractRegistry = require('../DataAccess/contractRegistry.js');
+var userRegistry = require('../DataAccess/userRegistry.js');
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -26,6 +27,26 @@ app.get('/getListOfContracts', function (req, res) {
 	contractRegistry.GetListOfContracts(function(listOfContracts){
 		res.json(listOfContracts);
 	});
+})
+
+app.get('/getListOfUsers', function (req, res) {
+	userRegistry.GetListOfUsers(function(listOfUsers){
+		res.json(listOfUsers);
+	});
+})
+
+app.post('/transferAsset', function (req, res) {
+  var assetName = req.body.assetName;
+  var toAddress = req.body.toAddress;
+  var userAddress = req.body.userAddress;
+  var userPassword = req.body.userPassword;
+  contractIssuance.Send(userAddress, userPassword, toAddress, assetName, value, function(txId){
+    if(txId){
+      res.json({'msg': 'succesfully transfered asset.  TxId: ', txId});
+    } else {
+      res.json({'err': 'There was an error transferring the asset'});
+    }
+  }); 
 })
 
 app.post('/login', function (req, res) {
