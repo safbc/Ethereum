@@ -40,11 +40,12 @@ export class AssetService {
       .map(response => response.json());
   }
 
-  transferAsset(assetName: string, userAddress: string, toAddress: string, userPassword: string): Observable<Response> {
+  transferAsset(assetName: string, amountToTransfer: number, userAddress: string, userPassword: string, toAddress: string): Observable<Response> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify({
       'assetName' : assetName,
+      'amountToTransfer' : amountToTransfer,
       'toAddress' : toAddress,
       'userAddress': userAddress,
       'userPassword': userPassword

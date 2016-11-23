@@ -62,6 +62,21 @@ var TransferComponent = (function () {
         this.toUser = this.counterparties[userIndex];
         console.log('this.toUser:', this.toUser);
     };
+    TransferComponent.prototype.transferAsset = function () {
+        var _this = this;
+        this.userService.getUser()
+            .then(function (user) {
+            _this.assetService.transferAsset(_this.selectedAsset, _this.amountToTransfer, user.name, user.password, _this.toUser.address)
+                .subscribe(function (data) {
+                if (data["err"] && data["err"] != '') {
+                    console.log('An error occured: ', data["err"]);
+                }
+                else {
+                    console.log(data);
+                }
+            }, function (err) { console.log(err.Message); });
+        });
+    };
     TransferComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

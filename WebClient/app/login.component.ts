@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
             this.errMsg = data["err"];
           } else {
             this.user.name = data["name"];
+						this.user.password = this.password;
             this.user.isLoggedIn = true;
             this.user.address = data["address"];
             this.userService.setUser(this.user);

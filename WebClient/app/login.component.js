@@ -31,6 +31,7 @@ var LoginComponent = (function () {
             }
             else {
                 _this.user.name = data["name"];
+                _this.user.password = _this.password;
                 _this.user.isLoggedIn = true;
                 _this.user.address = data["address"];
                 _this.userService.setUser(_this.user);

@@ -74,5 +74,22 @@ export class TransferComponent implements OnInit {
 		this.toUser = this.counterparties[userIndex];
 		console.log('this.toUser:', this.toUser);
 	}
+
+	transferAsset(): void {
+    this.userService.getUser()
+      .then(user => {
+				this.assetService.transferAsset(this.selectedAsset, this.amountToTransfer, user.name, user.password, this.toUser.address) 
+					.subscribe(
+						data => {
+							if(data["err"] && data["err"] != ''){
+								console.log('An error occured: ', data["err"]);
+							} else {
+								console.log(data);
+							}
+						},
+						err => { console.log(err.Message); }
+		  		);
+			});
+  }
 }
 

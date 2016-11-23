@@ -42,11 +42,12 @@ var AssetService = (function () {
         return this.http.post('http://localhost:3032/getAssetBalance', body, options)
             .map(function (response) { return response.json(); });
     };
-    AssetService.prototype.transferAsset = function (assetName, userAddress, toAddress, userPassword) {
+    AssetService.prototype.transferAsset = function (assetName, amountToTransfer, userAddress, userPassword, toAddress) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var body = JSON.stringify({
             'assetName': assetName,
+            'amountToTransfer': amountToTransfer,
             'toAddress': toAddress,
             'userAddress': userAddress,
             'userPassword': userPassword

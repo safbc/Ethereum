@@ -37,10 +37,12 @@ app.get('/getListOfUsers', function (req, res) {
 
 app.post('/transferAsset', function (req, res) {
   var assetName = req.body.assetName;
+  var amountToTransfer = req.body.amountToTransfer;
   var toAddress = req.body.toAddress;
   var userAddress = req.body.userAddress;
   var userPassword = req.body.userPassword;
-  contractIssuance.Send(userAddress, userPassword, toAddress, assetName, value, function(txId){
+
+  contractIssuance.Send(userAddress, userPassword, toAddress, assetName, amountToTransfer, function(txId){
     if(txId){
       res.json({'msg': 'succesfully transfered asset.  TxId: ', txId});
     } else {
