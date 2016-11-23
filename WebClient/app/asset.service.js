@@ -42,6 +42,18 @@ var AssetService = (function () {
         return this.http.post('http://localhost:3032/getAssetBalance', body, options)
             .map(function (response) { return response.json(); });
     };
+    AssetService.prototype.transferAsset = function (assetName, userAddress, toAddress, userPassword) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var body = JSON.stringify({
+            'assetName': assetName,
+            'toAddress': toAddress,
+            'userAddress': userAddress,
+            'userPassword': userPassword
+        });
+        return this.http.post('http://localhost:3032/transferAsset', body, options)
+            .map(function (response) { return response.json(); });
+    };
     AssetService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

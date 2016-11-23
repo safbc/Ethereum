@@ -88,12 +88,12 @@ function getBalance(address, contractName, cb){
   });
 }
 
-function sendFunds(loggedInUser, toAddress, contractName, value, cb){
+function sendFunds(userAddress, userPassword, toAddress, contractName, value, cb){
   var version = 1; //TODO This needs to be fixed as per issue #11 https://github.com/springblock/BlockchainInfrastructure/issues/11
   contractRegistry.GetContract(contractName, version, function(contract){
-    txCreator.GetRawContractTransfer(contract.abi, contract.address, loggedInUser.address, toAddress 
+    txCreator.GetRawContractTransfer(contract.abi, contract.address, userAddress, toAddress 
         , value, function(rawTx){
-      accountManagement.SignRawTransaction(rawTx, loggedInUser.address, loggedInUser.password
+      accountManagement.SignRawTransaction(rawTx, userAddress, userPassword
           , function(signedTx){
         web3.eth.sendRawTransaction(signedTx, function(err, hash) {
         if (err) {console.log('ERROR | SendRawTransaction:', err);}

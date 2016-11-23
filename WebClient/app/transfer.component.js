@@ -20,6 +20,10 @@ var TransferComponent = (function () {
         this.assets = [];
         this.selectedAsset = '';
         this.assetBalance = 0;
+        this.counterparties = [];
+        this.counterpartyNames = [];
+        this.selectedCounterparty = '';
+        this.amountToTransfer = 0;
     }
     TransferComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -30,8 +34,17 @@ var TransferComponent = (function () {
                 _this.assets.push(data[index]["contractName"]);
             }
         }, function (err) { console.log('err:', err); });
+        this.userService.getListOfUsers()
+            .subscribe(function (data) {
+            _this.counterparties = [];
+            _this.counterpartyNames = [];
+            for (var index in data) {
+                _this.counterparties.push(data[index]);
+                _this.counterpartyNames.push(data[index]["name"]);
+            }
+        }, function (err) { console.log('err:', err); });
     };
-    TransferComponent.prototype.typeaheadOnSelect = function (e) {
+    TransferComponent.prototype.assetOnSelect = function (e) {
         var _this = this;
         console.log('Selected value:', e.value);
         this.userService.getUser()
@@ -42,6 +55,12 @@ var TransferComponent = (function () {
                 _this.assetBalance = data["balance"];
             }, function (err) { console.log('err:', err); });
         });
+    };
+    TransferComponent.prototype.counterpartyOnSelect = function (e) {
+        console.log('Selected user:', e.value);
+        var userIndex = this.counterparties.map(function (x) { return x.name; }).indexOf(e.value);
+        this.toUser = this.counterparties[userIndex];
+        console.log('this.toUser:', this.toUser);
     };
     TransferComponent = __decorate([
         core_1.Component({

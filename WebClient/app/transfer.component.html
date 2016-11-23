@@ -8,12 +8,10 @@
         <tr>
           <td>Asset</td>
           <td>
-            
   					<input [(ngModel)]="selectedAsset"
          					 [typeahead]="assets"
-         					 (typeaheadOnSelect)="typeaheadOnSelect($event)"
+         					 (typeaheadOnSelect)="assetOnSelect($event)"
          					 class="form-control">
-           
 				  </td>
         </tr>
         <tr>
@@ -22,11 +20,16 @@
         </tr>
         <tr>
           <td>Transfer to</td>
-          <td><input type="text" class="form-control text-right" /></td>
+          <td>
+  					<input [(ngModel)]="selectedCounterparty"
+         					 [typeahead]="counterpartyNames"
+         					 (typeaheadOnSelect)="counterpartyOnSelect($event)"
+         					 class="form-control">
+					</td>
         </tr>
         <tr>
           <td>Amount</td>
-          <td><input type="number" class="form-control text-right" /></td>
+          <td><input type="number" class="form-control text-right" [(ngModel)]="amountToTransfer"  /></td>
         </tr>
         <tr>
           <td></td>

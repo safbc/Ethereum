@@ -40,4 +40,17 @@ export class AssetService {
       .map(response => response.json());
   }
 
+  transferAsset(assetName: string, userAddress: string, toAddress: string, userPassword: string): Observable<Response> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify({
+      'assetName' : assetName,
+      'toAddress' : toAddress,
+      'userAddress': userAddress,
+      'userPassword': userPassword
+    });
+    return this.http.post('http://localhost:3032/transferAsset', body, options)
+      .map(response => response.json());
+  }
+
 }

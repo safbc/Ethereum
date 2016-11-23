@@ -27,12 +27,18 @@ var UserService = (function () {
         this.user = user;
     };
     UserService.prototype.login = function (username, password) {
-        return this.callServer('login', username, password);
+        return this.postToServer('login', username, password);
     };
     UserService.prototype.register = function (username, password) {
-        return this.callServer('registerNewUser', username, password);
+        return this.postToServer('registerNewUser', username, password);
     };
-    UserService.prototype.callServer = function (functionCall, username, password) {
+    UserService.prototype.getListOfUsers = function () {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.get('http://localhost:3032/getListOfUsers', options)
+            .map(function (response) { return response.json(); });
+    };
+    UserService.prototype.postToServer = function (functionCall, username, password) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var body = JSON.stringify({ 'userName': username, 'password': password });
