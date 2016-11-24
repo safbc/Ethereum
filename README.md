@@ -57,7 +57,11 @@ path: /usr/local/bin/solc
 
 These steps will outline getting an Ethereum node up and running with a bunch of defaults. The helper scripts will place all blockchain data in Blockchain/data and use a genesis block file Blockchain/genesisBlock.js. Open the helper scripts and genesisBlock.js in a text editor and have a look to see what they do.
 
-0.Run ./createNewGenesisBlock.sh to create a new genesis block
+0.Create a new genesis block
+```
+./createNewGenesisBlock.sh 
+```
+
 1.Run the below to start a node. It will give the node a name of "TestNode", not connect to any peers and not start any mining.
 ```
 ./startEtherNode.sh TestNode
@@ -105,6 +109,7 @@ This agent will publish the collected data to the private eth-stats website dash
 ## Running the web client ##
 In order to make the blockchain transactions a little more visible and easier to interact with, we are building a web ui that can run on top of the ethereum node.  
 You will require node.js and npm in order to run the client.  Simply go to the WebClient folder and type: 
-...
+```
 npm start
-...
+```
+
