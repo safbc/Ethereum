@@ -1,3 +1,6 @@
+This repo has been cloned from the BlockchainInfrastructure repo as a base and refocused on Ethereum specific components.
+Non Ethereum folders have been moved to seperate repos according to their focus.  
+
 ## Getting started ##
 
 For a really quick start see the [docker](https://github.com/springblock/BlockchainInfrastructure/tree/master/docker) folder for scripts that will get Docker based containers on your server.
