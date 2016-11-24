@@ -57,31 +57,31 @@ path: /usr/local/bin/solc
 
 These steps will outline getting an Ethereum node up and running with a bunch of defaults. The helper scripts will place all blockchain data in Blockchain/data and use a genesis block file Blockchain/genesisBlock.js. Open the helper scripts and genesisBlock.js in a text editor and have a look to see what they do.
 
-0. Run ./createNewGenesisBlock.sh to create a new genesis block
-1. Run the below to start a node. It will give the node a name of "TestNode", not connect to any peers and not start any mining.
+0.Run ./createNewGenesisBlock.sh to create a new genesis block
+1.Run the below to start a node. It will give the node a name of "TestNode", not connect to any peers and not start any mining.
 ```
 ./startEtherNode.sh TestNode
 ```
 
-2. Run the following to create an account/address to mine to with password "password":
+2.Run the following to create an account/address to mine to with password "password":
 ```
 > personal.newAccount("password")
 "<0x your account address>"
 ```
 
-3. Quit by typing exit or Ctrl+D. This will stop the node from running.
+3.Quit by typing exit or Ctrl+D. This will stop the node from running.
 
-4. Running the below will start the node, name it TestNode, and instruct it to mine with 1 cputhread to your address:
+4.Running the below will start the node, name it TestNode, and instruct it to mine with 1 cputhread to your address:
 ```
 ./startEtherNodeAndMine.sh <0x your account address> TestNode
 ```
 
-5. You now have a node up and running that is mining to your account address. To check that all is well, open a new terminal window and run the following:
+5.You now have a node up and running that is mining to your account address. To check that all is well, open a new terminal window and run the following:
 ```
 ./attachToLocalEtherNode.sh
 ```
 
-6. You now have a repl environment that is attached to the node started above. Run the following to check your eth balance:
+6.You now have a repl environment that is attached to the node started above. Run the following to check your eth balance:
 ```
 > eth.getBalance(eth.coinbase)
 1.53e+21
