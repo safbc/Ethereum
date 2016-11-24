@@ -108,7 +108,8 @@ This agent will publish the collected data to the private eth-stats website dash
 
 ## Running the web client ##
 In order to make the blockchain transactions a little more visible and easier to interact with, we are building a web ui that can run on top of the ethereum node.  
-You will require node.js and npm in order to run the client.  Simply go to the WebClient folder and type: 
+You will require [node.js](https://nodejs.org/en/download/) to be installed in order to run the client. 
+Simply clone the WebClient repo to your environnment and type: 
 ```
 npm start
 ```
