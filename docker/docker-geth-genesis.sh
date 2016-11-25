@@ -36,8 +36,8 @@ This script will REMOVE ALL FILES in the $CHAINDATA path specified below
 docker rm geth
 
 #DO NOT CHANGE THESE VALUES
-CHAINDATA=/Ethereum/Blockchain/data
-WORKDIR=/Ethereum
+CHAINDATA=/BlockchainInfrastructure/Blockchain/data
+WORKDIR=/BlockchainInfrastructure
 GENESISPARAMS=" --datadir $CHAINDATA init $WORKDIR/Blockchain/genesisBlock.json"
 
 # Display the settings being used on startup
@@ -48,7 +48,7 @@ echo " "
 echo " "
 echo "GETH  CMD  = geth $GENESISPARAMS"
 
-echo "Backig up current static & trusted nodes files"
+echo "Backing up current static & trusted nodes files"
 mkdir $WORKDIR/backup
 cp $CHAINDATA/*.json $WORKDIR/backup
 

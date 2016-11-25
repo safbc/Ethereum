@@ -62,8 +62,8 @@ PORT=20010
 #This is the stats webserver details
 AGENTORIGIN="http://41.76.226.170:3000"
  
-CHAINDATA=/Ethereum/Blockchain/data
-WORKDIR=/Ethereum
+CHAINDATA=/BlockchainInfrastructure/Blockchain/data
+WORKDIR=/BlockchainInfrastructure
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
 OTHERPARAMS=" --autodag --cache=512 --nat any --metrics --nodiscover --maxpeers 0 --verbosity 6"

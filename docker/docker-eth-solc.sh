@@ -39,6 +39,8 @@ file you want to compile.
 
 "
 
+docker rm solc
+
 # get IPs from ifconfig and dig and display for information
 LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
 IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
@@ -59,7 +61,7 @@ if [ ! -d "$OUTPUT" ]; then
 mkdir $OUTPUT
 fi
 
-docker run --name springblocksolc -v $WORKDIR:$WORKDIR --rm \
+docker run --name solc -v $WORKDIR:$WORKDIR --rm \
    mrhornsby/solc:latest -o $OUTPUT --abi --bin $1
 
 ls -l $OUTPUT
