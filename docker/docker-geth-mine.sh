@@ -40,7 +40,7 @@ Please make appropriate changes to the $NODEID, $NETID, $COINBASE values below f
 "
 
 # remove any previous version of the docker image
-docker rm springblocknode
+docker rm geth
 
 # get IPs from ifconfig and dig and display for information
 LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
@@ -58,8 +58,8 @@ COINBASE="0x714abced09269d76896caf0555fdff644fbfae20"
 RPCPORT=20000
 PORT=20010
 AGENTORIGIN="http://41.76.226.170:3000"
-CHAINDATA=/BlockchainInfrastructure/Blockchain/data
-WORKDIR=/BlockchainInfrastructure
+CHAINDATA=/Ethereum/Blockchain/data
+WORKDIR=/Ethereum
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
 MINEPARAMS=" --mine --etherbase $COINBASE --preload $WORKDIR/Blockchain/pauseMining.js"
@@ -82,7 +82,7 @@ echo "$RPCCORS"
 echo "$MINEPARAMS"
 echo "$OTHERPARAMS"
 
-docker run -d --name springblocknode -v $WORKDIR:$WORKDIR \
+docker run -d --name geth -v $WORKDIR:$WORKDIR \
     --network="host" -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
     -w="$WORKDIR" \
     ethereum/client-go $NODEPARAMS $RPCCORS $MINEPARAMS $OTHERPARAMS
