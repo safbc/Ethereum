@@ -14,6 +14,7 @@ See the Docker documentation at https://docs.docker.com/
 ##The scripts
 
 ###Build the container
+This will take some time to download and process.
 ```
 sudo docker build -t geth --pull --rm .
 ```
