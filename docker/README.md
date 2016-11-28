@@ -16,7 +16,7 @@ See the Docker documentation at https://docs.docker.com/
 ###Build the container
 This will take some time to download and process.
 ```
-sudo docker build -t geth --pull --rm .
+sudo docker build -t springblock/geth --pull --rm .
 ```
 
 Only use this the first time to generate your new genesis block.
@@ -103,7 +103,7 @@ sudo docker stop geth
 ```
 *2 Rebuild the container (pulling newer versions if available)*
 ```
-sudo docker build -t geth --pull --rm .
+sudo docker build -t springblock/geth --pull --rm .
 ```
 
 ##Other helpfull Docker commands
