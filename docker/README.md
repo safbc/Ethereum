@@ -3,7 +3,7 @@
 The Ethereum components (geth, solc etc) can all be run in preconfigured Docker containers on Linux and Mac OS X using these /bash scripts below. {Windows shell scripts comming soon}.
 
 There is no need to install a local Ethereum client or compiler instance. 
-Just edit and run these scripts to pull and start the relevant container with all our current standard parameters defined.
+Just execute the Docker build command below and run these scripts to start the relevant container with all our current standard parameters defined.
 
 ###*NOTE: The appropriate Docker Engine for your OS needs to be installed.*
 See the Docker documentation at https://docs.docker.com/
