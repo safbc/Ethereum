@@ -15,7 +15,7 @@ See the Docker documentation at https://docs.docker.com/
 
 ###Build the container
 ```
-sudo docker build --name geth .
+sudo docker build -t geth --pull --rm .
 ```
 
 Only use this the first time to generate your new genesis block.
@@ -100,40 +100,33 @@ process should basically involve.
 ```
 sudo docker stop geth
 ```
-*2 Deleting any existing container images, including base containers* (ubuntu, alpha etc)
+*2 Rebuild the container (pulling newer versions if available)*
 ```
-sudo docker images
-sudo docker rmi '<image id>' 
-```
-*3 Rebuild the container*
-```
-sudo docker build --name geth .
+sudo docker build -t geth --pull --rm .
 ```
 
 ##Other helpfull Docker commands
 
+Display all containers on your system.
 ```
 docker ps -a
 ```
 
-Display all containers on your system.
-
+This will display the output (non interactive) of the background container.
 ```
 docker logs -f geth
 ```
 
-This will display the output (non interactive) of the background container.
-
+Generate a detailed report (json formatted) of the current configuration of the docker container. 
 ```
 docker inspect geth
 ```
 
-Generate a detailed report (json formatted) of the current configuration of the docker container. 
-
+This will stop the running geth node
 ```
 docker stop geth
 ```
 
-This will stop the background springblock node
+
 
 
