@@ -18,7 +18,7 @@ The instance is preconfigured for the South African Blockchain network.
 
 # Script name       : docker-geth-console.sh
 # Author            : Gary De Beer (BankservAfrica)
-# Last Modifiy Date : 20/10/2016 
+# Last Modifiy Date : 28/11/2016 
 
 #USAGE NOTES:
 ===========
@@ -92,5 +92,5 @@ docker run -it --name geth -v $WORKDIR:$WORKDIR \
     --network="host" \
     -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
     -w="$WORKDIR" \
-    ethereum/client-go $NODEPARAMS $RPCCORS $OTHERPARAMS \
+    geth $NODEPARAMS $RPCCORS $OTHERPARAMS \
     console
