@@ -19,7 +19,7 @@ perform just-in-time mining of eth to the specified coinbase account.
 
 # Script name       : docker-geth-mine.sh
 # Author            : Gary De Beer (BankservAfrica)
-# Last Modifiy Date : 20/10/2016 
+# Last Modifiy Date : 28/11/2016 
 
 USAGE NOTES:
 ===========
@@ -82,14 +82,16 @@ echo "$RPCCORS"
 echo "$MINEPARAMS"
 echo "$OTHERPARAMS"
 
-docker run -d --name geth -v $WORKDIR:$WORKDIR \
-    --network="host" -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
-    -w="$WORKDIR" \
-    ethereum/client-go $NODEPARAMS $RPCCORS $MINEPARAMS $OTHERPARAMS
-
 echo "Use this command to get a tailed output of the docker image output"
 
-echo "docker logs -f springblocknode"
+echo "docker logs -f geth"
 echo " "
 echo "To stop the node.."
-echo "docker stop springblocknode"
+echo "docker stop geth"
+
+
+docker run -ti --name geth -v $WORKDIR:$WORKDIR \
+    --network="host" -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
+    -w="$WORKDIR" \
+    springblock/geth $NODEPARAMS $RPCCORS $MINEPARAMS $OTHERPARAMS \
+    console

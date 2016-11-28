@@ -92,5 +92,5 @@ docker run -it --name geth -v $WORKDIR:$WORKDIR \
     --network="host" \
     -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
     -w="$WORKDIR" \
-    geth $NODEPARAMS $RPCCORS $OTHERPARAMS \
+    springblock/geth $NODEPARAMS $RPCCORS $OTHERPARAMS \
     console

@@ -18,7 +18,7 @@ The South African Private Blockchain Network
 
 # Script Name      : docker-geth-genesis.sh
 # Author           : Gary De Beer (BankservAfrica)
-# Last Modifiy Date: 18/10/2016 
+# Last Modifiy Date: 28/11/2016 
 
 #USAGE NOTES:
 #===========
@@ -63,4 +63,4 @@ echo "Starting the geth container"
 docker run -t -i --name geth -v $WORKDIR:$WORKDIR \
     --network="host" \
     -w="$WORKDIR" \
-    ethereum/client-go $GENESISPARAMS
+    sprinblock/geth $GENESISPARAMS
