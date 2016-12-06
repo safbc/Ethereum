@@ -63,4 +63,4 @@ echo "Starting the geth container"
 docker run -t -i --name geth -v $WORKDIR:$WORKDIR \
     --network="host" \
     -w="$WORKDIR" \
-    sprinblock/geth $GENESISPARAMS
+    springblock/geth $GENESISPARAMS
