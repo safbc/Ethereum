@@ -67,6 +67,8 @@ These steps will outline getting an Ethereum node up and running with a bunch of
 ./startEtherNode.sh TestNode
 ```
 
+> Very Important: In the current version of Geth 1.5, according to the spec it should ignore maxpeers if you add the peer manually in the console with admin.addPeer however it does not. In the scripts startEtherNode.sh and startEtherNodeAndMine.sh it is set to maxpeers=0 which means you won't be able to add peers. Until this bug has been fixed, please remove the maxpeers from the script or set it to your maxpeers.
+
 2.Run the following to create an account/address to mine to with password "password":
 ```
 > personal.newAccount("password")
@@ -75,7 +77,7 @@ These steps will outline getting an Ethereum node up and running with a bunch of
 
 3.Quit by typing exit or Ctrl+D. This will stop the node from running.
 
-4.Running the below will start the node, name it TestNode, and instruct it to mine with 1 cputhread to your address:
+4.Running the below will start the node, name it TestNode, and instruct it to mine with 1 cputhread to your address. If you don't have a DAG[https://github.com/ethereum/wiki/wiki/Mining#ethash-dag] generated (you should not have one if it's a new installation), you should see output Generating DAG: 0% - 100% and then after it's done: Done generating DAG for epoch 0, it took 3m4.528893763s. Script:
 ```
 ./startEtherNodeAndMine.sh <0x your account address> TestNode
 ```
@@ -85,7 +87,7 @@ These steps will outline getting an Ethereum node up and running with a bunch of
 ./attachToLocalEtherNode.sh
 ```
 
-6.You now have a repl environment that is attached to the node started above. Run the following to check your eth balance:
+6.You now have a repl environment that is attached to the node started above. Run the below sh script to check your eth balance. If you haven't mined any blocks (running eth.blockNumber in your attachedNode will return 0) your balance should return 0.
 ```
 > eth.getBalance(eth.coinbase)
 1.53e+21
