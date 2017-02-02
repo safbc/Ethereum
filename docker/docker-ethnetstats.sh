@@ -27,11 +27,11 @@ This should only be run on one server as all other nodes should report into just
 docker rm ethnetstats
 
 # get IPs from ifconfig and dig and display for information
-#LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
-#IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
+IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
-#echo "Local IP: $LOCALIP"
-#echo "Public IP: $IP"
+echo "Local IP: $LOCALIP"
+echo "Public IP: $IP"
 
 #DO NOT CHANGE THESE VALUES
 PORT=3000
