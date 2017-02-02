@@ -60,13 +60,13 @@ NETID=44951
 RPCPORT=20000
 PORT=20010
 #This is the stats webserver details
-AGENTORIGIN="http://41.76.226.170:3000"
+AGENTORIGIN="41.76.226.170:3000"
  
 CHAINDATA=/Ethereum/Blockchain/data
 WORKDIR=/Ethereum
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
-RPCCORS=" --rpccorsdomain $AGENTORIGIN"
-STATS=" --ethstats Bankserv:SpringblockGeheim@localhost:3000"
+RPCCORS=" --rpccorsdomain http://$AGENTORIGIN"
+STATS=" --ethstats Bankserv:SpringblockGeheim@$AGENTORIGIN"
 OTHERPARAMS=" --autodag --cache=512 --nat any --metrics --nodiscover --maxpeers 0 --verbosity 6"
 
 # Display the settings being used on startup
