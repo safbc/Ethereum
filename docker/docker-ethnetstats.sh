@@ -38,7 +38,8 @@ PORT=3000
 
 #This is the stats webserver details
 AGENTORIGIN="http://$IP:$PORT"
-WORKDIR="/Ethereum/eth-netstats"
+HOSTDIR="/Ethereum/eth-netstats"
+WORKDIR="/eth-netstats"
 OTHERPARAMS=" "
 
 # Display the settings being used on startup
@@ -52,8 +53,7 @@ echo "$OTHERPARAMS"
 echo " 
 Starting up dashboard at $AGENTORIGIN
 "
-docker run -it --name ethnetstats -v $WORKDIR:$WORKDIR \
+docker run -it --name ethnetstats -v $HOSTDIR:$WORKDIR \
  +    --network="host" \
  +    -p $PORT:$PORT \
- +    -w="$WORKDIR" \
  +    springblock/ethnetstats $OTHERPARAMS \
