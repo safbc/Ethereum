@@ -66,6 +66,7 @@ CHAINDATA=/Ethereum/Blockchain/data
 WORKDIR=/Ethereum
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
+STATS=" --ethstats Bankserv:SpringblockGeheim@localhost:3000
 OTHERPARAMS=" --autodag --cache=512 --nat any --metrics --nodiscover --maxpeers 0 --verbosity 6"
 
 # Display the settings being used on startup
@@ -81,6 +82,7 @@ echo " "
 echo " "
 echo "GETH CMD   = geth $NODEPARAMS"
 echo "$RPCCORS"
+echo "$STATS"
 echo "$OTHERPARAMS"
 
 echo " 
@@ -92,5 +94,5 @@ docker run -it --name geth -v $WORKDIR:$WORKDIR \
     --network="host" \
     -p $PORT:$PORT -p $RPCPORT:$RPCPORT \
     -w="$WORKDIR" \
-    springblock/geth $NODEPARAMS $RPCCORS $OTHERPARAMS \
+    springblock/geth $NODEPARAMS $RPCCORS $STATS $OTHERPARAMS \
     console
