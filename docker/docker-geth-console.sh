@@ -66,7 +66,7 @@ CHAINDATA=/Ethereum/Blockchain/data
 WORKDIR=/Ethereum
 NODEPARAMS=" --identity $NODEID --rpc --rpcport $RPCPORT --datadir $CHAINDATA --port $PORT --networkid $NETID"
 RPCCORS=" --rpccorsdomain $AGENTORIGIN"
-STATS=" --ethstats Bankserv:SpringblockGeheim@localhost:3000
+STATS=" --ethstats Bankserv:SpringblockGeheim@localhost:3000"
 OTHERPARAMS=" --autodag --cache=512 --nat any --metrics --nodiscover --maxpeers 0 --verbosity 6"
 
 # Display the settings being used on startup
