@@ -16,7 +16,7 @@ The South African Private Blockchain Network
 
 This is an Ethereum Solidity compiler image, allowing you to compile contracts on any platform that supports Docker.
 
-# Script name   : docker-eth-solc.sh
+# Script name   : docker-solc.sh
 # Author        : Gary de Beer (BankservAfrica)
 # Last modified : 20/10/2016
 
