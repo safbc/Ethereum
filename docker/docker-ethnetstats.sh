@@ -8,19 +8,16 @@ Welcome to
  \    ||  |  |  .  \ |  | |  |  ||     ||     ||     ||     \     ||  .  |
   \___||__|  |__|\_||____||__|__||___,_||_____||_____| \___/ \____||__|\_|
 The South African Private Blockchain Network
-This script starts an interactive instance of the latest Ethereum Go client in a Docker vm
-The instance is preconfigured for the South African Blockchain network.
+This script starts an instance of the Ethereum Stats Dashboard in a Docker vm
+The instance is preconfigured for the South African Blockchain Consortium network.
 # Script name       : docker-ethnetstats.sh
 # Author            : Gary De Beer (BankservAfrica)
 # Last Modifiy Date : 03/02/2017 
 #USAGE NOTES:
 ===========
-This script is installed as part of springblock/Ethereum Git repo and requires all 
-files from that repo to be present in the path as configured in the $WORKDIR variable below. 
-This script can be used to perform the task of building and starting a docker instance of
-the Ethereum Stats Dashboard.
+This script is installed as part of springblock/Ethereum Git repo.
 
-This should only be run on one server as all other nodes should report into just the one instance.
+There should only be one instance of this dashboard running as all Ethereum nodes should be publishing to it.
 "
 
 # remove any previous version of the docker image
