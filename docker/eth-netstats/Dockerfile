@@ -8,5 +8,5 @@ RUN cd /eth-netstats && echo '#!/bin/bash\nset -e\n\ncd /eth-netstats\nWS_SECRET
 RUN cd /eth-netstats && chmod +x /eth-netstats/startscript.sh
 
 WORKDIR /eth-netstats
-
+EXPOSE 3000
 CMD ["./startscript.sh"]
