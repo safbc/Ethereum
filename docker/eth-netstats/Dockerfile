@@ -1,4 +1,4 @@
-FROM node:7
+FROM node:latest
 
 RUN git clone https://github.com/cubedro/eth-netstats
 RUN cd /eth-netstats && npm install
