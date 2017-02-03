@@ -10,7 +10,7 @@ Welcome to
 The South African Private Blockchain Network
 This script starts an instance of the Ethereum Stats Dashboard in a Docker vm
 The instance is preconfigured for the South African Blockchain Consortium network.
-# Script name       : docker-ethnetstats.sh
+# Script name       : docker-ethstats.sh
 # Author            : Gary De Beer (BankservAfrica)
 # Last Modifiy Date : 03/02/2017 
 #USAGE NOTES:
@@ -21,7 +21,7 @@ There should only be one instance of this dashboard running as all Ethereum node
 "
 
 # remove any previous version of the docker image
-docker rm ethnetstats
+docker rm ethstats
 
 # get IPs from ifconfig and dig and display for information
 LOCALIP=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | cut -d':' -f2)
@@ -34,20 +34,15 @@ echo "Public IP: $IP"
 PORT=3000
 
 #This is the stats webserver details
-AGENTORIGIN="http://$IP:$PORT"
-#HOSTDIR="/Ethereum/eth-netstats"
-#WORKDIR="/eth-netstats"
+URL="http://$IP:$PORT"
 OTHERPARAMS=" "
 
 # Display the settings being used on startup
 echo "Startup parameters: (edit script to alter)"
 echo "PORT       = $PORT"
-echo "AGENTORIGIN= $AGENTORIGIN"
 echo " "
-echo " "
-echo "$OTHERPARAMS"
 
 echo " 
-Starting up dashboard at $AGENTORIGIN
+Starting up dashboard at $URL
 "
-docker run -it --name ethnetstats --network="host" -p $PORT:$PORT springblock/ethnetstats 
+docker run -it --name ethstats --network="host" -p $PORT:$PORT springblock/ethnetstats 
